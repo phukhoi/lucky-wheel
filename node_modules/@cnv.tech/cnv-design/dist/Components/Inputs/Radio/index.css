@@ -1,0 +1,76 @@
+.cnv-radio {
+  position: relative;
+  /* padding-left: 20px;
+  user-select: none;
+  cursor: pointer;
+  color: var(--text-1); */
+}
+/* .cnv-radio:hover {
+  opacity: 0.9;
+  color: var(--primary);
+}
+.cnv-radio.disabled,
+.cnv-radio:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cnv-radio > input[type="radio"] {
+  z-index: 2;
+  opacity: 0;
+}
+
+.cnv-radio > input[type="radio"] ~ nav:first-of-type {
+  z-index: 1;
+  border: solid 1px transparent;
+  border-radius: 50%;
+  background-color: var(--secondary);
+  border-color: var(--text-3);
+}
+.cnv-radio:hover > input[type="radio"] ~ nav:first-of-type {
+  background-color: var(--primary-1);
+  border-color: var(--primary);
+}
+.cnv-radio > input[type="radio"]:checked ~ nav:first-of-type {
+  border-color: var(--primary);
+}
+
+.cnv-radio > input[type="radio"] ~ nav:first-of-type::before {
+  content: "";
+  height: 8px;
+  width: 8px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 3px;
+  border: solid 1px transparent;
+  border-radius: 50%;
+  background-color: var(--primary);
+  transform: scale(0);
+  opacity: 0;
+}
+.cnv-radio > input[type="radio"]:checked ~ nav:first-of-type::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.cnv-radio > input[type="radio"],
+.cnv-radio > input[type="radio"] ~ nav:first-of-type {
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.cnv-radio > input[type="radio"] ~ nav:first-of-type > svg {
+  margin: 2px;
+  fill: var(--secondary);
+  line-height: 10px;
+  vertical-align: top;
+  transform: scale(0);
+}
+.cnv-radio > input[type="radio"]:checked ~ nav:first-of-type > svg {
+  transform: scale(1);
+} */

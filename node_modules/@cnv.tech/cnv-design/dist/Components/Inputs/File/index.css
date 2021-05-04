@@ -1,0 +1,89 @@
+.cnv-input-file-wrapper.draggable .cnv-draggable-list{
+	min-height: 120px;
+	height: auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	position: relative;
+	cursor: pointer;
+  border: 1px dashed #54667a;
+}
+
+.cnv-input-file-wrapper.draggable input[type=file].cnv-input-file{
+  display: none;
+}
+
+.cnv-input-file-wrapper:not([cnv-multiple]) .cnv-draggable-list{
+	max-height: 200px;
+}
+
+.dnd-box img{
+	height: auto;
+	max-height: 100%;
+	max-width: 150px;
+	margin: 5px auto;
+}
+
+.dnd-box.dragover{
+	border: 1px dashed #000699;
+	background-color: #fafafa;
+}
+
+.cnv-input-file-wrapper.draggable span{
+	/* color: #c4c4c4; */
+	color: #505050;
+	/* display: block; */
+	display: flex;
+	text-align: center;
+	/* line-height: 120px; */
+	justify-content: center;
+	width:100%;
+	height: 120px;
+	align-items: center;
+}
+
+.dnd-box .dnd-toolbar{
+	position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+	display: none;
+}
+
+.dnd-box .dnd-toolbar .dnd-toolbar-item{
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 12px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.cnv-input-file-wrapper.cnv-dragover img,
+.cnv-input-file-wrapper.cnv-drop span{
+	display: none;
+}
+
+.cnv-input-file-item{
+	position: relative;
+}
+
+.cnv-input-file-item i{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.dnd-box.drop:hover .dnd-toolbar{
+	display: block;
+}
+
+@media screen and (max-width: 767px){
+	.dnd-box.drop .dnd-toolbar{
+		display: block;
+	}
+}
+
+.cnv-input-file-wrapper img {
+	max-height: 110px;
+}

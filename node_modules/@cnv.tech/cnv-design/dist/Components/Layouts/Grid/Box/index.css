@@ -1,0 +1,15 @@
+.cnv-box {
+  position: relative;
+  width: 100%;
+}
+
+.cnv-box > .cnv-box-title {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background-color: var(--white);
+}
+
+.cnv-box > .cnv-box:not(:first-of-type) {
+  border-top: 0;
+}

@@ -1,0 +1,95 @@
+.cnv-popup{
+  z-index: 150;
+  top: -100%;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+}
+.cnv-popup.show{
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  animation: popupbackdrop 0.5s 1;
+}
+
+.cnv-popup.show.hide{
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color ease-in 0.2s;
+}
+
+.cnv-popup-backdrop{
+  left: 0;
+  right: 0;
+  z-index: 150;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+}
+
+.cnv-popup-body{
+  background-color: var(--white);
+  margin: 0 auto;
+  padding: 28px 29px 35px;
+  border-radius: 3px;
+  z-index: 151;
+  width: calc(100% - 44px);
+}
+
+.cnv-popup.show .cnv-popup-body{
+  margin-top: 0;
+  animation: popup 0.5s 1;
+}
+
+.cnv-popup.show.hide .cnv-popup-body{
+  margin-top: -150%;
+  transition: margin-top ease-in 0.5s;
+}
+
+.pos-fixed{
+  position: fixed;
+}
+
+.pos-relative{
+  position: relative;
+}
+
+.pos-absolute{
+  position: absolute;
+}
+
+.fixed-top{
+  top: 0;
+}
+
+.fixed-bottom{
+  bottom: 0;
+}
+
+.fixed-right{
+  right: 0;
+}
+
+.fixed-left{
+  left: 0;
+}
+
+@keyframes popupbackdrop {
+  0%{
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100%{
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes popup{
+  0%{
+    margin-top: -150%;
+  }
+  100%{
+    margin-top: 0;
+  }
+}

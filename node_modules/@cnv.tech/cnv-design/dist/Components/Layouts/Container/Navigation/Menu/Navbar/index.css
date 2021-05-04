@@ -1,0 +1,9 @@
+.cnv-menu-item-link,
+.cnv-menu-item-group{
+  transition: all ease 0.3s;
+}
+
+.cnv-menu-item-group{
+  display: block!important;
+  overflow: hidden;
+}

@@ -1,0 +1,76 @@
+.cnv-text-wrapper,
+.cnv-text {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+/* 
+.cnv-text {
+  padding: 12px;
+  border-radius: 3px;
+  user-select: none;
+  touch-action: manipulation;
+  border: solid 1px transparent;
+  background-color: var(--secondary);
+  border-color: var(--text-3);
+  color: var(--text);
+  font-size: var(--size);
+  text-decoration: none;
+  outline: none;
+}
+
+.cnv-text:hover,
+.cnv-text:focus {
+  opacity: 0.9;
+  background-color: var(--primary-1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.cnv-text:focus {
+  box-shadow: 0 0 4px var(--primary);
+}
+
+.cnv-text-wrapper > .cnv-text.cnv-text-has-title,
+.cnv-text-wrapper > .cnv-text.cnv-text-has-title ~ span {
+  transition-duration: 0.2;
+  transition-timing-function: ease-out;
+}
+
+.cnv-text-wrapper > .cnv-text.cnv-text-has-title.cnv-text-has-value {
+  padding-top: 20px;
+  padding-bottom: 4px;
+}
+
+.cnv-text-wrapper > .cnv-text.cnv-text-has-title ~ span {
+  font-size: var(--size-mono);
+  color: var(--text-2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 0 12px;
+  margin: 4px 0;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.cnv-text-wrapper
+  > .cnv-text.cnv-text-has-title.cnv-text-has-value
+  ~ span {
+  transform: none;
+  opacity: 1;
+}
+
+.cnv-text.disabled,
+.cnv-text:disabled {
+  opacity: 0.6;
+}
+.cnv-text-wrapper.disabled,
+.cnv-text.disabled,
+.cnv-text:disabled {
+  pointer-events: none;
+} */

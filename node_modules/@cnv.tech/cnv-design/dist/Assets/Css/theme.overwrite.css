@@ -1,0 +1,100 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: var(--p-background);
+}
+#root {
+  width: calc(100% - var(--p-frame-offset));
+  margin-left: var(--p-frame-offset);
+}
+
+body,
+html {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  color: var(--p-text);
+}
+
+.navbar-vertical-absolute,
+.navbar-vertical-fixed {
+  width: var(--c-left-menu-width);
+  margin-left: calc(-1 * var(--c-left-menu-width));
+}
+
+@media (min-width: 1200px) {
+  .navbar-vertical-aside-show-xl .navbar:not(.navbar-vertical) {
+    margin-left: var(--c-left-menu-width);
+  }
+
+  .navbar-vertical-aside-show-xl .main {
+    padding-left: var(--c-left-menu-width);
+  }
+}
+
+.card {
+  background-color: var(--p-surface);
+  box-shadow: var(
+    --p-card-shadow,
+    0 0 0 1px rgba(63, 63, 68, 0.05),
+    0 1px 3px 0 rgba(63, 63, 68, 0.15)
+  );
+  outline: 0.1rem solid transparent;
+}
+
+.card,
+.card.card-fluid > .card-body {
+  border-radius: var(--p-border-radius-wide, 3px);
+}
+.card {
+  border: none;
+}
+
+.card.card-fluid {
+  padding: 0;
+}
+.card.card-fluid > .card-body {
+  padding: 0;
+}
+.card.card-fluid > .card-body > *:first-child {
+  border-top-left-radius: var(--p-border-radius-wide, 3px);
+  border-top-right-radius: var(--p-border-radius-wide, 3px);
+}
+.card.card-fluid > .card-body > *:last-child {
+  border-bottom-left-radius: var(--p-border-radius-wide, 3px);
+  border-bottom-right-radius: var(--p-border-radius-wide, 3px);
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 10px rgba(55, 125, 255, 0.1);
+}
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+  border-color: rgba(55, 125, 255, 0.4);
+  background-color: var(--p-interactive);
+}
+.custom-control-label::before {
+  border: var(--p-control-border-width) solid var(--p-border);
+  background-color: var(--p-surface);
+  border-radius: var(--p-border-radius-base);
+}
+
+.table thead th {
+  padding: 1.6rem;
+  text-align: left;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 0;
+}
+.table thead th {
+  font-size: inherit;
+  text-transform: none;
+}
+
+.badge {
+  padding: 0.3rem 0.8rem;
+  font-size: var(--c-main-size);
+  font-weight: var(--p-badge-font-weight);
+  border-radius: 2rem;
+  border: var(--p-override-zero);
+}
