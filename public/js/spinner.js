@@ -1040,37 +1040,116 @@
     width: 100%;
   }
 
-
-  .popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 999;
-      display: none;
-    }
-    .popup.show {
-      display: block;
-    }
-    .popup .popup-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
-    .popup .popup-content {
-      background-color: #ffffff;
-      max-width: 470px;
-    }
-    .modal-content{
-      border: none !important;
-    }
   .hc-luckywheel {
     margin-left: auto;
     margin-right: auto;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    display: none;
+  }
+
+  .popup.show {
+    display: block;
+  }
+
+  .popup .popup-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .popup .popup-content {
+    background-color: #ffffff;
+    max-width: 470px;
+    padding: 40px;
+  }
+
+  .popup .form-group {
+    margin-bottom: 15px;
+  }
+
+  .popup .form-label {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+
+  .popup .form-control {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .popup .title {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .popup .btn {
+    border: none;
+    background-color: #F2994A;
+    width: 100%;
+    height: 40px;
+    color: #ffffff;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+
+  .popup .btn--green {
+    background-color: #27AE60;
+  }
+
+  .popup .desc {
+    text-align: center;
+  }
+
+  .popup--success {
+    text-align: center;
+  }
+
+  .popup--success .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(50% - 5px);
+  }
+
+  .popup--success .popup-footer {
+    padding-top: 15px;
+  }
+
+  .popup .sub-title {
+    color: #9F9F9F;
+    font-weight: normal;
+    font-size: 14px;
+  }
+
+  .popup .gift {
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    color: #EB5757;
   }`;
 
   styleInject(css_md);
