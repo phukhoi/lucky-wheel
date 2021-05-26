@@ -19,6 +19,7 @@ function initHTML(){
       <div class="modal-content">
         <span class="cnv-md-close">&times;</span>
         <div class="wrapper typo" id="wrapper">
+            <img class="hc-luckywheel-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
           <section id="luckywheel" class="hc-luckywheel">
             <div class="hc-luckywheel-container">
               <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
