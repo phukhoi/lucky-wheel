@@ -19,8 +19,8 @@ function initHTML(){
       <div class="modal-content">
         <span class="cnv-md-close">&times;</span>
         <div class="wrapper typo" id="wrapper">
+        <section id="luckywheel" class="hc-luckywheel">
             <img class="hc-luckywheel-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
-          <section id="luckywheel" class="hc-luckywheel">
             <div class="hc-luckywheel-container">
               <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
             </div>
@@ -81,49 +81,44 @@ function initHTML(){
 
 initHTML();
 
-insertScript('http://game-platform.test/js/spinner.js?');
-// insertScript('https://game-platform-staging.cnvloyalty.com/js/spinner.js');
+// insertScript('http://game-platform.test/js/spinner.js?');
+insertScript('https://game-platform-staging.cnvloyalty.com/js/spinner.js');
 
 
 
 var isPercentage = true;
 var prizes = [
         {
-        text: "Áo thun 0",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
+        text: "Mã giảm giá 1 (20%)",
+        img: "https://img.icons8.com/bubbles/2x/prize.png",
         number: 1, // 1%,
         percentpage: 0.01 // 1%
         },
         {
-        text: "Nón 1",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
+        text: "Mã giảm giá 2 (15%)",
+        img: "https://img.icons8.com/bubbles/2x/prize.png",
         number: 1,
         percentpage: 0.05 // 5%
         },
         {
-        text: "Vòng Tay 2",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
+        text: "Mã giảm giá 3 (10%)",
+        img: "https://img.icons8.com/bubbles/2x/prize.png",
         number : 1,
         percentpage: 0.1 // 10%
         },
         {
-        text: " Security 3",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
+        text: "Giải đặc biệt (5%)",
+        img: "https://img.icons8.com/bubbles/2x/prize.png",
         number: 1,
         percentpage: 0.24 // 24%
         },
         {
-        text: "Chúc bạn may mắn lần sau 4",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
-        percentpage: 0.6 // 60%
-        },
-        {
-        text: "Chúc bạn may mắn lần sau 5",
-        img: "https://i.pinimg.com/originals/6f/5d/f7/6f5df76e5753e152aea0d39d9978d6b6.jpg",
+        text: "Chúc bạn may mắn lần sau",
+        img: "https://img.icons8.com/bubbles/2x/prize.png",
         percentpage: 0.6 // 60%
         },
     
-    ];
+    ];  
 
  	
 var w_ready = false;   	

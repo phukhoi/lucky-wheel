@@ -930,8 +930,8 @@
     left: 0;
     top: 0;
     z-index: 1;
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
     border-radius: inherit;
     background-clip: padding-box;
     background-color: #ffcb3f;
@@ -961,7 +961,7 @@
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: 20%;
     color: #e4370e;
     font-weight: bold;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
@@ -969,8 +969,9 @@
 
   .hc-luckywheel-item span {
     position: relative;
+    width: 100%;
+    height: 100%;
     display: block;
-    /* width: 50px; */
     margin: 0 auto;
     text-align: center;
     -webkit-transform-origin: 50% 173%;
@@ -1002,7 +1003,7 @@
     top: 4%;
     left: 0px;
     width: 20%;
-    height: 20%;
+    height: 100%;
   }
 
   /*Change this when change size*/
