@@ -216,7 +216,27 @@
     
     btn.addEventListener('click', event => {
       if (!allowToPlay) {
-        addClass(document.querySelector('.popup--info'), 'show');
+        const gameToken = localStorage.getItem('gameToken');
+        const timeToPlay = localStorage.getItem('timeToPlay');
+        if (gameToken) {
+          if (timeToPlay) {
+            // Call API claim game => Success  => Spin
+            console.log('Call API claim game => Success  => Spin');
+            
+            // Get prize
+            fnRequest('https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim?game_code=d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'POST', function() {
+              allowToPlay = true;
+              console.log('Prize');
+              
+              // Trigger Spin
+              
+            });
+          } else {
+            alert('Bạn đã hết lượt quay');
+          }
+        } else {
+          addClass(document.querySelector('.popup--info'), 'show');
+        }
       } else {
         targetPrize = 3;
         if (!targetPrize) return;
@@ -267,29 +287,104 @@
     
     var btnSubmit = document.querySelector('.form-btn--info');
     var formInfo = document.querySelector('.info-form');
+    function insertAfter(referenceNode, newNode) {
+      referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+    }
+    
+    document.getElementById('input-name').addEventListener('focus', (event) => {
+      console.log(event.target.parentNode);
+      event.target.parentNode.querySelector('.form-error').innerHTML = '';
+    }, true);
+    
+    document.getElementById('input-email').addEventListener('focus', (event) => {
+      console.log(event.target.parentNode);
+      event.target.parentNode.querySelector('.form-error').innerHTML = '';
+    }, true);
+    
+    document.getElementById('input-phone').addEventListener('focus', (event) => {
+      console.log(event.target.parentNode);
+      event.target.parentNode.querySelector('.form-error').innerHTML = '';
+    }, true);
+    
     btnSubmit.addEventListener('click', event => {
-      // TODO: Send data with post request ti save user's iunformation
-      //validate form info
       var data = serialize(formInfo);
-      var email = data.email;
-
-      fnRequest('https://game-platform-staging.cnvloyalty.com/api/client/authorization?email='+email, 'POST', function(res) {
-        console.log('authorization response:', res)
-        // TODO: Need to check status of API save user's information
-        // Check how many time left that user can play game
-        if (res.status === 200) {
-          var token = res.jwt
-          // Get prize
-          fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
-            // Clode popup
-            removeClass(document.querySelector('.popup--info'), 'show');
-            // TODO: update target prize need to animate to
-            
-            // TODO: If that user have times, allow to play 
-            allowToPlay = true;
-          })
+      let countError = 0;
+      
+      // Validate
+      for (const [key, value] of Object.entries(data)) {
+        if (!value) {
+          const inp = document.getElementById(`input-${key}`);
+          inp.parentNode.querySelector('.form-error').innerHTML = 'Vui lòng nhập thông tin';
+          countError += 1;
         }
-      });
+      }
+      
+      if (countError === 0) {
+        fnRequest('https://game-platform-staging.cnvloyalty.com/api/client/authorization?email='+data.email, 'POST', function(res) {
+          // TODO: Need to check status of API save user's information
+          // Check how many time left that user can play game
+          if (res.status === 200) {
+            const token = res.jwt;
+            const timeToPlay = res.time || 1;
+            
+            localStorage.setItem('gameToken', token);
+            localStorage.setItem('timeToPlay', timeToPlay);
+
+            // Get prize
+            fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
+              // Clode popup
+              removeClass(document.querySelector('.popup--info'), 'show');
+              // TODO: update target prize need to animate to
+              
+              // TODO: If that user have times, allow to play 
+              allowToPlay = true;
+            });
+          }
+        });
+      }
+      
+      // makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/authorization', data)
+      //   .then(function(response) {
+      //     // Todo: Re-check CROSS
+          
+      //     makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', {
+            
+      //     }, function() {
+            
+      //     });
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   })
+    });
+  }
+  
+  function makeRequest (method, url, data) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(xhr.response);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      if(method == "POST" && data) {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+      }else{
+        xhr.send();
+      }
     });
   }
   
@@ -447,7 +542,6 @@
     });
   }
 
-  
 
   //
   function styleInject(e, t) {
@@ -1190,6 +1284,15 @@
     text-transform: uppercase;
     margin-bottom: 24px;
     color: #EB5757;
+  }
+  .popup .form-error {
+    color: #dc3545;
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 5px;
+  }
+  .popup .form-error:empty {
+    margin-top: 0;
   }`;
 
   styleInject(css_md);

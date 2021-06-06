@@ -1,18 +1,18 @@
 window.cnvwidget = {
     appId: '363772567412181',
     pageId: '103515201811807',
-};
-
-function insertScript(url) {
+  };
+  
+  function insertScript(url) {
     var a = document.createElement('script');
     a.async = 1;
     if (url) {
         a.src = url;
     }
     document.head.appendChild(a);
-}
-
-function initHTML(){
+  }
+  
+  function initHTML(){
     
     document.body.innerHTML = `<div id="cnvWheel"><!-- The Modal -->
     <div id="cnvWidget" class="modal">
@@ -37,16 +37,19 @@ function initHTML(){
                 <form class="info-form" action="">
                 <div class="form-group">
                     <label class="form-label" for="Họ và tên">Họ và tên</label>
-                    <input type="text" class="form-control" name="name" data-name="Họ và tên" placeholder="Họ và tên" />
+                    <input id="input-name" type="text" class="form-control" name="name" data-name="Họ và tên" placeholder="Họ và tên" />
+                    <div class="form-error hidden"></div>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="Họ và tên">Email</label>
-                    <input type="text" class="form-control" name="email" data-name="Email" placeholder="Email" required value="test_email@yopmail.com" />
-                </div>
+                    <input id="input-email" type="text" class="form-control" name="email" data-name="Email" placeholder="Email" required value="" />
+                    <div class="form-error hidden"></div>
+              </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="Số điện thoại">Số điện thoại</label>
-                    <input type="text" class="form-control" name="phone" data-name="Số điện thoại" placeholder="Số điện thoại" />
+                    <input id="input-phone" type="text" class="form-control" name="phone" data-name="Số điện thoại" placeholder="Số điện thoại" />
+                    <div class="form-error hidden"></div>
                 </div>
     
                 <button type="button" class="btn btn--info form-btn--info">
@@ -76,18 +79,18 @@ function initHTML(){
     </div>
     <!-- End of Modal Success -->
     </div>`; 
-
-}
-
-initHTML();
-
-// insertScript('http://game-platform.test/js/spinner.js?');
-insertScript('https://game-platform-staging.cnvloyalty.com/js/spinner.js');
-
-
-
-var isPercentage = true;
-var prizes = [
+  
+  }
+  
+  initHTML();
+  
+  // insertScript('http://game-platform.test/js/spinner.js?');
+  insertScript('./spinner.js');
+  
+  
+  
+  var isPercentage = true;
+  var prizes = [
         {
         text: "Mã giảm giá 1 (20%)",
         img: "https://img.icons8.com/bubbles/2x/prize.png",
@@ -119,11 +122,11 @@ var prizes = [
         },
     
     ];  
-
- 	
-var w_ready = false;   	
-var w_is_ready = setInterval(function() {
-
+  
+   
+  var w_ready = false;   	
+  var w_is_ready = setInterval(function() {
+  
     if (w_ready) {
         clearInterval(w_is_ready);
     }
@@ -134,9 +137,9 @@ var w_is_ready = setInterval(function() {
             initWheel();
         });
     }
-
-
-function initWheel(){
+  
+  
+  function initWheel(){
     // console.log(document.getElementById('cnvWheel'));
     hcLuckywheel.init({
         id: "luckywheel",
@@ -161,9 +164,9 @@ function initWheel(){
             }
         }
         });
-} 
-
-function randomIndex(prizes){
+  } 
+  
+  function randomIndex(prizes){
     if(isPercentage){
         var counter = 1;
         for (let i = 0; i < prizes.length; i++) {
@@ -176,7 +179,7 @@ function randomIndex(prizes){
         }
         let rand = Math.random();
         let prizeIndex = null;
-
+  
         switch (true) {
         case rand < prizes[4].percentpage:
             prizeIndex = 4 ;
@@ -218,11 +221,12 @@ function randomIndex(prizes){
         return randomIndex(prizes)
         }
     }
-}
-
-
+  }
+  
+  
     clearInterval(w_is_ready);
-}, 400)
-
-
-
+  }, 400)
+  
+  
+  
+  
