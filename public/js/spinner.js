@@ -400,10 +400,10 @@
           statusText: xhr.statusText
         });
       };
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('gameUserToken'));
       if(method == "POST" && data) {
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('gameUserToken'));
         xhr.send(JSON.stringify(data));
       }else{
         xhr.send();
