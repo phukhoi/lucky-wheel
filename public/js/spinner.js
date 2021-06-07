@@ -347,9 +347,15 @@
             //   // TODO: If that user have times, allow to play 
             //   allowToPlay = true;
             // });
+
             const claim_data = {
               game_code: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
             }
+            //get user history
+            makeRequest('GET', 'https://game-platform-staging.cnvloyalty.com/api/client/game-info'+'?'+'game_code='+claim_data.game_code, function() {
+              
+            });
+
             makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', claim_data, function() {
               // Clode popup
               removeClass(document.querySelector('.popup--info'), 'show');

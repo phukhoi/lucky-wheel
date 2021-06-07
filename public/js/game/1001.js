@@ -1,5 +1,8 @@
 window.cnvwidget = {
-    gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
+    gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5',
+    productionUrl: '',
+    stagingUrl: 'https://game-platform-staging.cnvloyalty.com.vn/',
+    isDebugMode: true
   };
   
   function insertScript(url) {
