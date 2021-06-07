@@ -1,6 +1,5 @@
 window.cnvwidget = {
-    appId: '363772567412181',
-    pageId: '103515201811807',
+    gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
   };
   
   function insertScript(url) {
@@ -84,8 +83,8 @@ window.cnvwidget = {
   
   initHTML();
   
-  // insertScript('http://game-platform.test/js/spinner.js?');
-  insertScript('./spinner.js');
+  insertScript('http://game-platform.test/js/spinner.js?');
+//   insertScript('./spinner.js');
   
   
   

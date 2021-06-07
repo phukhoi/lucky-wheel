@@ -216,21 +216,26 @@
     
     btn.addEventListener('click', event => {
       if (!allowToPlay) {
-        const gameToken = localStorage.getItem('gameToken');
+        const gameUserToken = localStorage.getItem('gameUserToken');
         const timeToPlay = localStorage.getItem('timeToPlay');
-        if (gameToken) {
+        if (gameUserToken) {
           if (timeToPlay) {
             // Call API claim game => Success  => Spin
             console.log('Call API claim game => Success  => Spin');
             
             // Get prize
-            fnRequest('https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim?game_code=d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'POST', function() {
+            var claim_data = {
+              game_code: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
+            }
+
+            makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', claim_data, function() {
               allowToPlay = true;
               console.log('Prize');
               
               // Trigger Spin
               
             });
+            
           } else {
             alert('Bạn đã hết lượt quay');
           }
@@ -324,20 +329,35 @@
           // TODO: Need to check status of API save user's information
           // Check how many time left that user can play game
           if (res.status === 200) {
-            const token = res.jwt;
-            const timeToPlay = res.time || 1;
-            
-            localStorage.setItem('gameToken', token);
+
+            const jsonResponse = JSON.parse(res.responseText);
+            const token = jsonResponse.jwt;
+            const timeToPlay = jsonResponse.time || 1;
+
+            localStorage.setItem('gameUserToken', token);
+            localStorage.setItem('gameUserEmail', data.email);
             localStorage.setItem('timeToPlay', timeToPlay);
 
             // Get prize
-            fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
+            // fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
+            //   // Clode popup
+            //   removeClass(document.querySelector('.popup--info'), 'show');
+            //   // TODO: update target prize need to animate to
+              
+            //   // TODO: If that user have times, allow to play 
+            //   allowToPlay = true;
+            // });
+            const claim_data = {
+              game_code: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
+            }
+            makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', claim_data, function() {
               // Clode popup
               removeClass(document.querySelector('.popup--info'), 'show');
               // TODO: update target prize need to animate to
               
               // TODO: If that user have times, allow to play 
               allowToPlay = true;
+              
             });
           }
         });
@@ -363,6 +383,7 @@
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open(method, url);
+
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           resolve(xhr.response);
@@ -380,7 +401,9 @@
         });
       };
       if(method == "POST" && data) {
+        xhr.setRequestHeader('Accept', 'application/json');
         xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('gameUserToken'));
         xhr.send(JSON.stringify(data));
       }else{
         xhr.send();
@@ -397,6 +420,7 @@
       }
     };
     xhttp.open(method, url, true);
+    // xhttp.responseType = 'json';
     xhttp.send();
   }
 
