@@ -11,7 +11,9 @@
     fnGotBack,
     optsPrize,
     allowToPlay = false,
-    targetPrize = null;
+    targetPrize = null,
+    targetPrizeId = null,
+    endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl;
 
   var cssPrefix,
     eventPrefix,
@@ -72,7 +74,6 @@
       prizes = opts.prizes = data;
       num = prizes.length;
       draw(opts);
-
     });
     events();
   }
@@ -167,78 +168,48 @@
    * @return {[type]} [description]
    */
   function events() {
-    // bind(btn, "click", function() {
-
-    //   addClass(btn, "disabled");
-
-    //   fnGetPrize(function(data) {
-    //     data = [3,1]; // control giải thưởng
-    //     if (data[0] == null && !data[1] == null) {
-    //       return;
-    //     }
-    //     console.log(data);
-    //     optsPrize = {
-    //       prizeId: data[0],
-    //       chances: data[1]
-    //     };
-    //     deg = deg || 0;
-    //     console.log('deg', deg);
-    //     console.log('num', num);
-    //     console.log('add deg', 360/num);
-    //     console.log('data[0]', data[0]);
-    //     console.log('(360 - (deg % 360))', (360 - (deg % 360)));
-    //   //   deg = deg + (360 - (deg % 360)) + (360 * 1 - data[0] * (360 / num)) ;
-    //     var _turn = 2;
-    //     var kichban = Math.floor((Math.random() * 2) + 1);
-    //     // kichban = 1;
-    //     if( kichban == 1 ){
-    //       deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) - (360/num) + (360/num/2) +20 ) ;
-    //       runRotate(deg );
-    //       setTimeout(() => {  
-    //           container.style.transitionDuration = '0.8s';
-    //           runRotate(deg + 360/num - (360/num/2) - 20);
-    //           container.style.transitionDuration = '6s';
-    //       }, 6000);
-    //     }
-    //     if( kichban == 2 ){
-    //       deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) + (360/num/2-10)  ) ;
-    //       runRotate(deg );
-    //       setTimeout(() => {  
-    //           container.style.transitionDuration = '2s';
-    //           runRotate(deg - 360/num + (360/num/2 + 10) );
-    //           container.style.transitionDuration = '6s';
-    //       }, 6000);
-    //     }
-
-    //   });
-    //   bind(container, transitionEnd, eGot);
-    // });
-    
     btn.addEventListener('click', event => {
       if (!allowToPlay) {
         const gameUserToken = localStorage.getItem('gameUserToken');
-        const timeToPlay = localStorage.getItem('timeToPlay');
+        const claim_data = {
+          game_code: window.cnvwidget?.gameId || ''
+        }
+        
         if (gameUserToken) {
-          if (timeToPlay) {
-            // Call API claim game => Success  => Spin
-            console.log('Call API claim game => Success  => Spin');
-            
-            // Get prize
-            var claim_data = {
-              game_code: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
-            }
+          makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code).then(res => {
+            if (res) {
+              const resData = JSON.parse(res);
+              const { data } = resData;
+              
+              // get historiest
+              const histories = data?.histories || [];
+                document.getElementById('histories').innerHTML = histories.map(item => 
+                `<div>
+                  <div>game_prize_name: ${item.game_prize_name}</div>
+                </div>`
+              ).join('');
+              
+              if (data.turn_count) {
+                // Get prize                
+                makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data).then(res => {
+                  if (res) {
+                    const resData = JSON.parse(res);
+                    const { data } = resData;
 
-            makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', claim_data, function() {
-              allowToPlay = true;
-              console.log('Prize');
-              
-              // Trigger Spin
-              
-            });
-            
-          } else {
-            alert('Bạn đã hết lượt quay');
-          }
+                    // todo: get position of game: targetPrize [position of game in the list]
+                    // memo: game_prize_id, game_prize_name
+                    targetPrizeId = data?.id;
+                    allowToPlay = true;
+                  }
+                })
+              } else {
+                alert('Bạn đã hết lượt quay');
+                allowToPlay = true;
+                targetPrize = null;
+                targetPrizeId = null;
+              }
+            }
+          });
         } else {
           addClass(document.querySelector('.popup--info'), 'show');
         }
@@ -280,12 +251,17 @@
           }, 6000);
         }
         bind(container, transitionEnd, function () {
-          // Select prize
-          fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
-            addClass(document.querySelector('.popup--success'), 'show');
-            targetPrize = null;
-            allowToPlay = false;
-          })
+          // memo: check and apply this prize for user
+          if (targetPrizeId) {
+            makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId }).then(res => {
+              console.log(res);
+              targetPrize = null;
+              targetPrizeId = null;
+              allowToPlay = false;
+              
+              addClass(document.querySelector('.popup--success'), 'show');
+            });
+          }
         });
       }
     });
@@ -325,7 +301,7 @@
       }
       
       if (countError === 0) {
-        fnRequest('https://game-platform-staging.cnvloyalty.com/api/client/authorization?email='+data.email, 'POST', function(res) {
+        fnRequest(`${endPoint}/api/client/authorization?email=`+data.email, 'POST', function(res) {
           // TODO: Need to check status of API save user's information
           // Check how many time left that user can play game
           if (res.status === 200) {
@@ -337,51 +313,50 @@
             localStorage.setItem('gameUserToken', token);
             localStorage.setItem('gameUserEmail', data.email);
             localStorage.setItem('timeToPlay', timeToPlay);
-
-            // Get prize
-            // fnRequest('https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8', 'GET', function() {
-            //   // Clode popup
-            //   removeClass(document.querySelector('.popup--info'), 'show');
-            //   // TODO: update target prize need to animate to
-              
-            //   // TODO: If that user have times, allow to play 
-            //   allowToPlay = true;
-            // });
-
+            
             const claim_data = {
-              game_code: '11a01ac7-20cf-42ec-9173-702de1ea7de5'
+              game_code: window.cnvwidget?.gameId || ''
             }
-            //get user history
-            makeRequest('GET', 'https://game-platform-staging.cnvloyalty.com/api/client/game-info'+'?'+'game_code='+claim_data.game_code, function() {
-              
-            });
 
-            makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', claim_data, function() {
-              // Clode popup
-              removeClass(document.querySelector('.popup--info'), 'show');
-              // TODO: update target prize need to animate to
-              
-              // TODO: If that user have times, allow to play 
-              allowToPlay = true;
-              
-            });
+            //get user history
+            makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code).then(res => {
+              if (res) {
+                const resData = JSON.parse(res);
+                const { data } = resData;
+                
+                // get historiest
+                const histories = data?.histories || [];
+                document.getElementById('histories').innerHTML = histories.map(item => 
+                `<div>
+                  <div>game_prize_name: ${item.game_prize_name}</div>
+                </div>`
+              ).join('');
+                
+                if (data.turn_count) {
+                  makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data).then(res => {
+                    if (res) {
+                      const resData = JSON.parse(res);
+                      const { data } = resData;
+
+                      // todo: get position of game: targetPrize [position of game in the list]
+                      // memo: game_prize_id, game_prize_name
+                      targetPrizeId = data?.game_prize_id;
+                      allowToPlay = true;
+                    }
+                  });
+                } else {
+                  removeClass(document.querySelector('.popup--info'), 'show');
+                  alert('Bạn đã hết lượt quay');
+                  allowToPlay = true;
+                  targetPrize = null;
+                  targetPrizeId = null;
+                }
+              }
+            })
+
           }
         });
       }
-      
-      // makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/authorization', data)
-      //   .then(function(response) {
-      //     // Todo: Re-check CROSS
-          
-      //     makeRequest('POST', 'https://game-platform-staging.cnvloyalty.com/api/client/rewards/claim', {
-            
-      //     }, function() {
-            
-      //     });
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   })
     });
   }
   

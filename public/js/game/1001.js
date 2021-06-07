@@ -1,7 +1,7 @@
 window.cnvwidget = {
     gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5',
     productionUrl: '',
-    stagingUrl: 'https://game-platform-staging.cnvloyalty.com.vn/',
+    stagingUrl: 'https://game-platform-staging.cnvloyalty.com',
     isDebugMode: true
   };
   
@@ -32,6 +32,7 @@ window.cnvwidget = {
       </div>
     </div>
     <!-- Modal information -->
+    <div id="histories"></div>
     <div class="popup popup--info">
           <div class="popup-inner">
             <div class="popup-content">
@@ -86,7 +87,7 @@ window.cnvwidget = {
   
   initHTML();
   
-  insertScript('http://game-platform.test/js/spinner.js?');
+  insertScript('./spinner.js?');
 //   insertScript('./spinner.js');
   
   
