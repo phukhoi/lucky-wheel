@@ -167,6 +167,19 @@
   /**
    * @return {[type]} [description]
    */
+  function autoFillFormInfo() {
+    // Memo: ?name=K&email=test@gmail.com&phone=123456
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    
+    if (!isEmpty(params)) {
+      document.querySelector('#input-name').value = params.name || '';
+      document.querySelector('#input-email').value = params.email || '';
+      document.querySelector('#input-phone').value = params.phone || '';
+      addClass(document.querySelector('.popup--info'), 'show');
+    }
+  }
+  
   function events() {
     btn.addEventListener('click', event => {
       if (!allowToPlay) {
@@ -176,40 +189,57 @@
         }
         
         if (gameUserToken) {
-          makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code).then(res => {
-            if (res) {
-              const resData = JSON.parse(res);
-              const { data } = resData;
-              
-              // get historiest
-              const histories = data?.histories || [];
-                document.getElementById('histories').innerHTML = histories.map(item => 
-                `<div>
-                  <div>game_prize_name: ${item.game_prize_name}</div>
-                </div>`
-              ).join('');
-              
-              if (data.turn_count) {
-                // Get prize                
-                makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data).then(res => {
-                  if (res) {
-                    const resData = JSON.parse(res);
-                    const { data } = resData;
+          makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
+            .then(res => {
+              if (res) {
+                const resData = JSON.parse(res);
+                const { data } = resData;
+                
+                // get historiest
+                const histories = data?.histories || [];
+                  document.getElementById('histories').innerHTML = histories.map(item => 
+                  `<div>
+                    <div>game_prize_name: ${item.game_prize_name}</div>
+                  </div>`
+                ).join('');
+                
+                if (data.turn_count) {
+                  // Get prize                
+                  makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data)
+                    .then(res => {
+                      if (res) {
+                        const resData = JSON.parse(res);
+                        const { data } = resData;
 
-                    // todo: get position of game: targetPrize [position of game in the list]
-                    // memo: game_prize_id, game_prize_name
-                    targetPrizeId = data?.id;
-                    allowToPlay = true;
-                  }
-                })
-              } else {
-                alert('Bạn đã hết lượt quay');
-                allowToPlay = true;
-                targetPrize = null;
-                targetPrizeId = null;
+                        // todo: get position of game: targetPrize [position of game in the list]
+                        // memo: game_prize_id, game_prize_name
+                        targetPrizeId = data?.id;
+                        allowToPlay = true;
+                        
+                        // Memo: Trigger click to auto spin
+                        document.querySelector('.popup .gift').innerHTML = data?.game_prize_name;
+                        document.querySelector(".hc-luckywheel-btn").click();
+                      }
+                    })
+                    .catch(res => {
+                      allowToPlay = false;
+                      alert(res.message);
+                    });
+                } else {
+                  alert('Bạn đã hết lượt quay');
+                  allowToPlay = true;
+                  targetPrize = null;
+                  targetPrizeId = null;
+                }
               }
+            })
+          .catch(res => {
+            if (res.status === 401) {
+              localStorage.removeItem('gameUserEmail');
+              localStorage.removeItem('gameUserToken');
+              addClass(document.querySelector('.popup--info'), 'show');
             }
-          });
+          })
         } else {
           addClass(document.querySelector('.popup--info'), 'show');
         }
@@ -231,7 +261,6 @@
         deg = deg || 0;
         var _turn = 2;
         var kichban = Math.floor((Math.random() * 2) + 1);
-1;
         if( kichban == 1 ){
           deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) - (360/num) + (360/num/2) +20 ) ;
           runRotate(deg );
@@ -253,13 +282,21 @@
         bind(container, transitionEnd, function () {
           // memo: check and apply this prize for user
           if (targetPrizeId) {
-            makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId }).then(res => {
-              console.log(res);
+            makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId })
+            .then(res => {
               targetPrize = null;
               targetPrizeId = null;
               allowToPlay = false;
-              
+
               addClass(document.querySelector('.popup--success'), 'show');
+            })
+            .catch(res => {
+              alert(res.message);
+              targetPrize = null;
+              targetPrizeId = null;
+              allowToPlay = false;
+
+              removeClass(btn, 'disabled');
             });
           }
         });
@@ -286,6 +323,11 @@
       console.log(event.target.parentNode);
       event.target.parentNode.querySelector('.form-error').innerHTML = '';
     }, true);
+    
+    document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--success.show'), 'show');
+      removeClass(btn, 'disabled');
+    });
     
     btnSubmit.addEventListener('click', event => {
       var data = serialize(formInfo);
@@ -333,17 +375,26 @@
               ).join('');
                 
                 if (data.turn_count) {
-                  makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data).then(res => {
-                    if (res) {
-                      const resData = JSON.parse(res);
-                      const { data } = resData;
+                  makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data)
+                    .then(res => {
+                      if (res) {
+                        const resData = JSON.parse(res);
+                        const { data } = resData;
 
-                      // todo: get position of game: targetPrize [position of game in the list]
-                      // memo: game_prize_id, game_prize_name
-                      targetPrizeId = data?.game_prize_id;
-                      allowToPlay = true;
-                    }
-                  });
+                        // todo: get position of game: targetPrize [position of game in the list]
+                        // memo: game_prize_id, game_prize_name
+                        targetPrizeId = data?.game_prize_id;
+                        allowToPlay = true;
+                        
+                        removeClass(document.querySelector('.popup--info'), 'show');
+                        // Memo: Trigger click to auto spin
+                        document.querySelector('.popup .gift').innerHTML = data?.game_prize_name;
+                        document.querySelector(".hc-luckywheel-btn").click();
+                      }
+                    })
+                    .catch(res => {
+                      alert(res.message);
+                    });
                 } else {
                   removeClass(document.querySelector('.popup--info'), 'show');
                   alert('Bạn đã hết lượt quay');
@@ -358,6 +409,8 @@
         });
       }
     });
+    
+    autoFillFormInfo();
   }
   
   function makeRequest (method, url, data) {
@@ -414,6 +467,15 @@
     }
   }
 
+  function isEmpty(obj) {
+    for(var prop in obj) {
+      if(obj.hasOwnProperty(prop)) {
+        return false;
+      }
+    }
+  
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
   /**
    * Bind events to elements
    * @param {Object}    ele    HTML Object
@@ -1005,6 +1067,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    line-height: 1.2;
   }
 
   .hc-luckywheel {
@@ -1017,6 +1080,7 @@
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
+    line-height: 0;
   }
   
   .hc-luckywheel-image {

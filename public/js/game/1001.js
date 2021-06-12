@@ -68,16 +68,17 @@ window.cnvwidget = {
     <!-- Modal Success -->
     <div class="popup popup--success ">
         <div class="popup-inner">
-        <div class="popup-content">
-            <p class="sub-title">Chúc mừng bạn đã nhận được phần quà
-            </p>
-            <p class="gift">VOUCHER 20%</p>
-            <p class="desc">Số lượng có hạn vậy nên mong quý khách hàng bình luận hoặc inbox để được nhận phần thưởng.</p>
-            <div class="popup-footer">
-            <a class="btn btn--green" href="#">Inbox</a>
-            <a class="btn" href="#">Mua hàng</a>
+            <div class="popup-content">
+                <button class="popup-close">×</button>
+                <p class="sub-title">Chúc mừng bạn đã nhận được phần quà
+                </p>
+                <p class="gift">VOUCHER 20%</p>
+                <p class="desc">Số lượng có hạn vậy nên mong quý khách hàng bình luận hoặc inbox để được nhận phần thưởng.</p>
+                <div class="popup-footer">
+                <a class="btn btn--green" href="#">Inbox</a>
+                <a class="btn" href="#">Mua hàng</a>
+                </div>
             </div>
-        </div>
         </div>
     </div>
     <!-- End of Modal Success -->
