@@ -181,6 +181,7 @@
   }
   
   function events() {
+    var animateCall = 0;
     btn.addEventListener('click', event => {
       if (!allowToPlay) {
         const gameUserToken = localStorage.getItem('gameUserToken');
@@ -230,6 +231,7 @@
                   allowToPlay = true;
                   targetPrize = null;
                   targetPrizeId = null;
+                  addClass(btn, "disabled");
                 }
               }
             })
@@ -281,12 +283,15 @@
         }
         bind(container, transitionEnd, function () {
           // memo: check and apply this prize for user
-          if (targetPrizeId) {
+          animateCall += 1;
+          
+          if (targetPrizeId && animateCall === 2) {
             makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId })
             .then(res => {
               targetPrize = null;
               targetPrizeId = null;
               allowToPlay = false;
+              animateCall  = 0;
 
               addClass(document.querySelector('.popup--success'), 'show');
             })
@@ -295,6 +300,7 @@
               targetPrize = null;
               targetPrizeId = null;
               allowToPlay = false;
+              animateCall = 0;
 
               removeClass(btn, 'disabled');
             });
@@ -387,9 +393,6 @@
                         allowToPlay = true;
                         
                         removeClass(document.querySelector('.popup--info'), 'show');
-                        // Memo: Trigger click to auto spin
-                        document.querySelector('.popup .gift').innerHTML = data?.game_prize_name;
-                        document.querySelector(".hc-luckywheel-btn").click();
                       }
                     })
                     .catch(res => {
@@ -401,6 +404,7 @@
                   allowToPlay = true;
                   targetPrize = null;
                   targetPrizeId = null;
+                  addClass(btn, "disabled");
                 }
               }
             })
@@ -1362,6 +1366,33 @@
   }
   .popup .form-error:empty {
     margin-top: 0;
+  }
+  .your-information {
+    display: none;
+  }
+  .your-information.show {
+    display: block;
+  }
+  .your-information .turn-count {
+    font-weight: 900;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 15px;
+    text-shadow: -1px -1px 0px #3c4915, 1px -1px 0px #3c4915, -1px 1px 0px #3c4915, 1px 1px 0px #3c4915;
+    text-align: center;
+  }
+  .your-information .times {
+    color: #FAC53B;
+    font-size: 40px;
+    text-shadow: -1px -1px 0px #3c4915, 1px -1px 0px #3c4915, -1px 1px 0px #3c4915, 1px 1px 0px #3c4915;
+  }
+  .your-information .histories {
+    display: block;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    text-decoration: underline;
   }`;
 
   styleInject(css_md);

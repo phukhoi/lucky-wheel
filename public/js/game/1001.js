@@ -18,16 +18,25 @@ window.cnvwidget = {
     
     document.body.innerHTML = `<div id="cnvWheel"><!-- The Modal -->
     <div id="cnvWidget" class="modal">
-      <div class="modal-content">
-        <span class="cnv-md-close">&times;</span>
-        <div class="wrapper typo" id="wrapper">
-        <section id="luckywheel" class="hc-luckywheel">
-            <img class="hc-luckywheel-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
-            <div class="hc-luckywheel-container">
-              <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
+        <div class="modal-content">
+            <span class="cnv-md-close">&times;</span>
+            <div class="wrapper typo" id="wrapper">
+            <section id="luckywheel" class="hc-luckywheel">
+                <img class="hc-luckywheel-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
+                <div class="hc-luckywheel-container">
+                <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
+                </div>
+                <a class="hc-luckywheel-btn" href="javascript:;">Xoay</a>
+            </section>
+            
+            <div class="your-information">
+                <div class="turn-count">
+                    Bạn còn
+                    <span class="times"></span>
+                    lượt chơi
+                </div>
+                <button class="histories">Kiểm tra phần thưởng</button>
             </div>
-            <a class="hc-luckywheel-btn" href="javascript:;">Xoay</a>
-          </section>
         </div>
       </div>
     </div>
