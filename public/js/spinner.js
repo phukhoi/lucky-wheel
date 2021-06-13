@@ -1393,6 +1393,13 @@
     margin-bottom: 30px;
     cursor: pointer;
     text-decoration: underline;
+  }
+  .modal-content {
+    padding: 15px 15px 45px 15px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://niemvuilaptrinh.ams3.cdn.digitaloceanspaces.com/background-css-javascript/Background%20Jquery%20CSS.png");
   }`;
 
   styleInject(css_md);
