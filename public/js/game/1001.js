@@ -32,19 +32,25 @@ window.cnvwidget = {
             <div class="your-information">
                 <div class="turn-count">
                     Bạn còn
-                    <span class="times"></span>
+                    <span class="times">0</span>
                     lượt chơi
                 </div>
-                <button class="histories">Kiểm tra phần thưởng</button>
+                <div class="text-center">
+                    <button class="btn-link btn-show-histories">Kiểm tra phần thưởng</button>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a class="hc-luckywheel-trigger-btn" href="javascript:;">Chơi ngay</a>
             </div>
         </div>
       </div>
     </div>
     <!-- Modal information -->
-    <div id="histories"></div>
     <div class="popup popup--info">
           <div class="popup-inner">
             <div class="popup-content">
+                <button class="popup-close">×</button>
                 <div class="title">BẠN VUI LÒNG NHẬP THÔNG TIN ĐỂ BÊN MÌNH GỬI QUÀ NHÉ!</div>
                 <form class="info-form" action="">
                 <div class="form-group">
@@ -75,7 +81,7 @@ window.cnvwidget = {
         </div>
     <!-- End of Modal information -->
     <!-- Modal Success -->
-    <div class="popup popup--success ">
+    <div class="popup popup--success">
         <div class="popup-inner">
             <div class="popup-content">
                 <button class="popup-close">×</button>
@@ -87,6 +93,16 @@ window.cnvwidget = {
                 <a class="btn btn--green" href="#">Inbox</a>
                 <a class="btn" href="#">Mua hàng</a>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Success -->
+    <!-- Modal Histories -->
+    <div class="popup popup--histories">
+        <div class="popup-inner">
+            <div class="popup-content">
+                <button class="popup-close">×</button>
+                <div id="histories"></div>
             </div>
         </div>
     </div>

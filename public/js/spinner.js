@@ -228,7 +228,7 @@
                     });
                 } else {
                   alert('Bạn đã hết lượt quay');
-                  allowToPlay = true;
+                  allowToPlay = false;
                   targetPrize = null;
                   targetPrizeId = null;
                   addClass(btn, "disabled");
@@ -415,6 +415,62 @@
     });
     
     autoFillFormInfo();
+    
+    // Play now button
+    document.querySelector('.hc-luckywheel-trigger-btn').addEventListener('click', event => {
+      document.querySelector(".hc-luckywheel-btn").click();
+    });
+    
+    // Close popups
+    document.querySelector('.popup--info .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--info'), 'show');
+    });
+    
+    document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--success'), 'show');
+    });
+    
+    document.querySelector('.popup--histories .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--histories'), 'show');
+    });
+    
+    // Get uder information if has token
+    const gameUserToken = localStorage.getItem('gameUserToken');
+    const claim_data = {
+      game_code: window.cnvwidget?.gameId || ''
+    }
+    if (gameUserToken) {
+      makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
+        .then(res => {
+          if (res) {
+            const resData = JSON.parse(res);
+            const { data } = resData;
+            
+            // get historiest
+            const histories = data?.histories || [];
+              document.getElementById('histories').innerHTML = histories.map(item => 
+              `<div class="prize">
+                <div class="prize-name">${item.game_prize_name}</div>
+              </div>`
+            ).join('');
+            
+            if (data.turn_count) {
+              document.querySelector('.your-information .times').innerHTML = data.turn_count;
+            } else {
+              // alert('Bạn đã hết lượt quay');
+              allowToPlay = false;
+              targetPrize = null;
+              targetPrizeId = null;
+              addClass(btn, "disabled");
+            }
+          }
+        });
+    }
+    
+    // Histories
+    document.querySelector('.btn-show-histories').addEventListener('click', event => {
+      addClass(document.querySelector('.popup--histories'), 'show');
+    });
   }
   
   function makeRequest (method, url, data) {
@@ -1279,6 +1335,7 @@
     background-color: #ffffff;
     max-width: 470px;
     padding: 40px;
+    position: relative;
   }
 
   .popup .form-group {
@@ -1367,8 +1424,22 @@
   .popup .form-error:empty {
     margin-top: 0;
   }
+  .popup .popup-close {
+    font-size: 30px;
+    border: none;
+    background: none;
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
   .your-information {
-    display: none;
+    // display: none;
   }
   .your-information.show {
     display: block;
@@ -1386,20 +1457,48 @@
     font-size: 40px;
     text-shadow: -1px -1px 0px #3c4915, 1px -1px 0px #3c4915, -1px 1px 0px #3c4915, 1px 1px 0px #3c4915;
   }
-  .your-information .histories {
-    display: block;
-    font-weight: 500;
-    font-size: 18px;
-    margin-bottom: 30px;
-    cursor: pointer;
-    text-decoration: underline;
-  }
   .modal-content {
     padding: 15px 15px 45px 15px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-image: url("https://niemvuilaptrinh.ams3.cdn.digitaloceanspaces.com/background-css-javascript/Background%20Jquery%20CSS.png");
+  }
+  .text-center {
+    text-align: center;
+  }
+  .your-information .btn-link {
+    border: none;
+    background: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .hc-luckywheel-trigger-btn {
+    display: inline-block;
+    border: none !important;
+    outline: none;
+    padding: 16px 80px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    background: rgb(250, 197, 59);
+  }
+  .hc-luckywheel-trigger-btn:hover {
+    border: none !important;
+    color: rgb(255, 255, 255) !important;
+    background: rgb(250, 197, 59) !important;
+  }
+  .prize + .prize {
+    margin-top: 10px;
+  }
+  .prize .prize-name {
+    font-size: 14px;
+    line-height: 17px;
   }`;
 
   styleInject(css_md);
