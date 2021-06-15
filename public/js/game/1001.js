@@ -1,9 +1,12 @@
 window.cnvwidget = {
-    gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5',
+    // gameId: '11a01ac7-20cf-42ec-9173-702de1ea7de5', //staging
+    gameId: '28c10871-5303-450a-a504-fcacf9e8300d', //local
     productionUrl: '',
-    stagingUrl: 'https://game-platform-staging.cnvloyalty.com',
+    stagingUrl: 'http://game-platform.test',
+    // stagingUrl: 'https://game-platform-staging.cnvloyalty.com',
     isDebugMode: true
   };
+  
   
   function insertScript(url) {
     var a = document.createElement('script');
@@ -113,8 +116,11 @@ window.cnvwidget = {
   
   initHTML();
   
-  insertScript('./spinner.js?');
-//   insertScript('./spinner.js');
+//   insertScript('./spinner.js?');
+
+  insertScript(window.cnvwidget.stagingUrl+'/js/spinner.js?');
+  
+  
   
   
   
