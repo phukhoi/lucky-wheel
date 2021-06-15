@@ -176,7 +176,12 @@
       document.querySelector('#input-name').value = params.name || '';
       document.querySelector('#input-email').value = params.email || '';
       document.querySelector('#input-phone').value = params.phone || '';
-      addClass(document.querySelector('.popup--info'), 'show');
+      
+      if (`${params.submit}` === '1' && params.name && params.email &&  params.phone) {
+        document.querySelector('.form-btn--info').click();
+      } else {
+        addClass(document.querySelector('.popup--info'), 'show');
+      }
     }
   }
   
