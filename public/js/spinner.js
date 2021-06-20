@@ -108,6 +108,15 @@
     }
 
     ctx = canvas.getContext("2d");
+    
+    var diameter = 270,
+      numberOfSlices = num,
+      radius = (diameter / 2),
+      circumfrance = (6.283185307 * radius),
+      sliceHeight = (circumfrance / numberOfSlices),
+      sliceOffeset = (sliceHeight / 2),
+      sliceColor = '#095B8',
+      rotation = 360 / numberOfSlices;
 
     for (var i = 0; i < num; i++) {
       ctx.save();
@@ -127,17 +136,36 @@
       ctx.stroke();
       ctx.restore();
       var prizeList = opts.prizes;
-      html.push('<li class="hc-luckywheel-item"> <span style="');
-      html.push(transform + ": rotate(" + i * turnNum + 'turn)">');
+      
+      var r = (((rotation * i - (360 / num / 2 - 90))));
+      var prize = '';
       if (opts.mode == "both") {
-        html.push("<p id='curve'>" + prizeList[i].text + "</p>");
-        html.push('<img src="' + prizeList[i].img + '" />');
+        prize = `<div><img class="prize-image" src="${prizeList[i].img}" /></div><div class="prize-name">${prizeList[i].text}</div>`;
       } else if (prizeList[i].img) {
-        html.push('<img src="' + prizeList[i].img + '" />');
+        prize = `<div><img class="prize-image" src="${prizeList[i].img}" />`;
       } else {
-        html.push('<p id="curve">' + prizeList[i].text + "</p>");
+        prize = `</div>div class="prize-name">${prizeList[i].text}</div>`;
       }
-      html.push("</span> </li>");
+      
+      html.push(`
+      <li class="hc-luckywheel-item" style="top: calc(50% - ${sliceOffeset}px); height: ${sliceHeight}px; transform: rotate(${r}deg);">
+        <div class="hc-luckywheel-item-inner">
+          ${prize}
+        </div>
+      </li>`)
+      
+      // html.push('<li class="hc-luckywheel-item"> <span style="');
+      // html.push(transform + ": rotate(" + turnNum * 1 + 'turn)">');
+      // if (opts.mode == "both") {
+      //   html.push('<img class="prize-image" src="' + prizeList[i].img + '" />');
+      //   html.push("<p id='curve' class='prize-name'>" + prizeList[i].text + "</p>");
+      // } else if (prizeList[i].img) {
+      //   html.push('<img src="' + prizeList[i].img + '" />');
+      // } else {
+      //   html.push('<p id="curve">' + prizeList[i].text + "</p>");
+      // }
+      // html.push("</span> </li>");
+
       if (i + 1 === num) {
         prizeItems.className = "hc-luckywheel-list";
         container.appendChild(prizeItems);
@@ -203,7 +231,7 @@
                 const { data } = resData;
                 if (data.turn_count != undefined) {
                     //update turn_count html
-                  document.querySelector('.your-information .times').innerHTML = data.turn_count;
+                  document.querySelector('.game-times').innerHTML = data.turn_count;
                 } 
                 // get historiest
                 const histories = data?.histories || [];
@@ -316,7 +344,7 @@
                     </div>`
                   ).join('');
                   
-                  document.querySelector('.your-information .times').innerHTML = data.turn_count;
+                  document.querySelector('.game-times').innerHTML = data.turn_count;
                   if (data.turn_count == 0) {
                     // alert('Bạn đã hết lượt quay');
                     allowToPlay = false;
@@ -421,7 +449,7 @@
               ).join('');
                 
               //update turn_count html
-              document.querySelector('.your-information .times').innerHTML = data.turn_count;
+              document.querySelector('.game-times').innerHTML = data.turn_count;
                 if (data.turn_count) {
                   makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data)
                     .then(res => {
@@ -463,9 +491,9 @@
     autoFillFormInfo();
     
     // Play now button
-    document.querySelector('.hc-luckywheel-trigger-btn').addEventListener('click', event => {
-      document.querySelector(".hc-luckywheel-btn").click();
-    });
+    // document.querySelector('.hc-luckywheel-trigger-btn').addEventListener('click', event => {
+    //   document.querySelector(".hc-luckywheel-btn").click();
+    // });
     
     // Close popups
     document.querySelector('.popup--info .popup-close').addEventListener('click', event => {
@@ -500,7 +528,7 @@
               </div>`
             ).join('');
             
-            document.querySelector('.your-information .times').innerHTML = data.turn_count;
+            document.querySelector('.game-times').innerHTML = data.turn_count;
             if (data.turn_count == 0) {
               // alert('Bạn đã hết lượt quay');
               allowToPlay = false;
@@ -602,7 +630,6 @@
    * @return {Boolean}
    */
   function hasClass(ele, cls) {
-    console.log(ele)
     if (!ele || !cls) return false;
     if (ele.classList) {
       return ele.classList.contains(cls);
@@ -613,7 +640,6 @@
 
   // addClass
   function addClass(ele, cls) {
-    console.log(ele)
     if (ele.classList) {
       ele.classList.add(cls);
     } else {
@@ -1177,11 +1203,9 @@
 
   .hc-luckywheel {
     position: relative;
-    max-width: 500px;
+    max-width: 336px;
     width: 100%;
     border-radius: 50%;
-    border: 16px solid #e44025;
-    box-shadow: 0 2px 3px #333, 0 0 2px #000;
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
@@ -1200,39 +1224,58 @@
     z-index: 1;
     width: 100%;
     height: 100%;
-    border-radius: inherit;
-    background-clip: padding-box;
-    background-color: #ffcb3f;
-    -webkit-transition: transform 6s ease;
-    transition: transform 6s ease;
-    /*transition: transform 6s cubic-bezier(0.38, 0.85, 0.43, 0.9);*/
-    /*-webkit-transition: transform 6s cubic-bezier(0.38, 0.85, 0.43, 0.9);*/
   }
 
-  .hc-luckywheel-container canvas {
-    width: inherit;
-    height: inherit;
+  .hc-luckywheel-container canvas,
+  .hc-luckywheel-list {
+    width: 270px;
+    height: 270px;
     border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
   }
 
   .hc-luckywheel-list {
-    position: absolute;
-    left: 0;
-    top: 12.39%;
-    width: inherit;
-    height: inherit;
     z-index: 2;
   }
 
-  .hc-luckywheel-item {
-    position: absolute;
-    left: 0;
-    top: 0;
+  .hc-luckywheel-item {    
+    z-index: 150;
+		position: absolute;
+		left: 50%;
+		width: 50%;
+		display: block;
+		transform-origin: left center;
+    display: flex;
+    align-items: center;
+    padding-left: 25px !important;
+  }
+  
+  .hc-luckywheel-item-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
     width: 100%;
-    height: 20%;
-    color: #e4370e;
+    align-items: center;
+  }
+  
+  .hc-luckywheel-item .prize-image {
+    display: inline-block;
+    max-height: 63px;
+  }
+  
+  .hc-luckywheel-item .prize-name {
+    font-size: 10px;
+    line-height: 12px;
     font-weight: bold;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+    text-align: center;
+    color: #000000;
+    text-transform: uppercase;
+    display: inline-block;
+    width: 96px;
   }
 
   .hc-luckywheel-item span {
@@ -1248,89 +1291,33 @@
     /*Change this when change size*/
     transform-origin: 50% 173%;
   }
-  
-  .hc-luckywheel-item p {
-    position: absolute;
-    width: 100%;
-    top: -45px;
-    text-align: center;
-  }
-  
-  @media only screen and (max-width: 640px) {
-    .hc-luckywheel-item p {
-      font-size: 12px;
-      line-height: 14px;
-      top: -20px;
-    }
-  }
 
   /*Change this when change size*/
 
   .hc-luckywheel-item img {
-    position: relative;
-    top: 4%;
-    left: 0px;
-    width: 20%;
-    height: 100%;
+    
   }
 
   /*Change this when change size*/
 
   .hc-luckywheel-btn {
     position: absolute;
-    left: 42%;
-    /*Change this when change size*/
-    top: 42%;
-    /*Change this when change size*/
-    z-index: 3;
-    width: 16%;
-    height: 16%;
-    border-radius: 50%;
-    color: #f4e9cc;
-    background-color: #e44025;
-    line-height: 1;
-    text-align: center;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.6);
-    text-decoration: none;
-  }
-
-  .hc-luckywheel-btn::after {
-    position: absolute;
-    display: block;
-    content: "";
-    left: 10%;
-    top: -57.5%;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    border-width: 30px;
-    border-style: solid;
-    border-color: transparent;
-    border-bottom-color: #e44025;
+    width: 75px;
+    height: 75px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none !important;
+    z-index: 30;
   }
   
-  @media only screen and (max-width: 640px) {
-    .hc-luckywheel-btn {
-      font-size: 14px;
-      line-height: 17px;
-      width: 50px;
-      height: 50px;
-      top: 50%;
-      left: 50%;
-      margin-left: -30px;
-      margin-top: -30px;
-    }
-    
-    .hc-luckywheel-btn::after {
-      border-width: 20px;
-      left: 5px;
-      top: -30px;
-    }
+  .hc-luckywheel-btn .hc-luckywheel-btn-icon {
+    width: auto;
+    max-width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .hc-luckywheel-btn.disabled {
@@ -1479,8 +1466,8 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -15px;
+    right: -15px;
     cursor: pointer;
   }
   .your-information {
@@ -1503,12 +1490,12 @@
     text-shadow: -1px -1px 0px #3c4915, 1px -1px 0px #3c4915, -1px 1px 0px #3c4915, 1px 1px 0px #3c4915;
   }
   .modal-content {
-    height: 100%;
-    padding: 0px 15px 0px 15px;
+    min-height: 100%;
+    padding: 67px 15px 67px 15px;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
-    background-image: url("https://niemvuilaptrinh.ams3.cdn.digitaloceanspaces.com/background-css-javascript/Background%20Jquery%20CSS.png");
+    background-position: center center;
+    box-sizing: border-box;
   }
   .text-center {
     text-align: center;
@@ -1551,6 +1538,134 @@
   }
   #cnvWidget{
       height: 100%;
+  }
+  
+  .game {
+    font-family: Helvetica Neue;
+  }
+  
+  .game-name {
+    width: 228px;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .game-count {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    margin-bottom: 44px;
+  }
+  
+  .game-btn {
+    border: none;
+    background: none;
+    background-color: #FFCB3D;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 21px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    padding: 7px 10px;
+    min-height: 41px;
+  }
+  
+  .game-footer {
+    max-width: 336px;
+    margin: 10px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .hc-luckywheel-arrow,
+  .hc-luckywheel-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .hc-luckywheel-border {
+    width: 100%;
+  }
+  
+  .hc-luckywheel-arrow {
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    width: 69px;
+  }
+  
+  .popup--result .popup-content {
+    color: #FFFFFF;
+    width: calc(100% - 30px);
+    max-width: 344px;
+    padding: 30px 15px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    background: #201612;
+  }
+  
+  .popup--result .popup-btn {
+    border: none;
+    background: none;
+    background-color: #FFCB3D;
+    border-radius: 3px;
+    height: 49px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 21px;
+    color: #070707;
+    width: 100%;
+    max-width: 262px;
+  }
+  
+  .popup--success .sub-title {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-bottom: 26px;
+  }
+  
+  .popup--success .gift {
+    font-weight: 900;
+    font-size: 45px;
+    line-height: 55px;
+    text-align: center;
+    color: #FFD714;
+    margin-bottom: 41px;
+  }
+  
+  .popup--result .desc {
+    margin-bottom: 25px;
+  }
+  
+  .popup--over-turn {
+    text-align: center;
+  }
+  
+  .popup--over-turn .icon {
+    margin-bottom: 37px;
+  }
+  
+  .popup--over-turn .sub-title {
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 35px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFD714;
+    margin-bottom: 38px;
   }
   `;
 
