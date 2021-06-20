@@ -117,9 +117,9 @@
       ctx.rotate((((360 / num) * i - rotateDeg) * Math.PI) / 180);
       ctx.arc(0, 0, 250, 0, (2 * Math.PI) / num, false); // Radius
       if (i % 2 == 0) {
-        ctx.fillStyle = "#ffb820";
+        ctx.fillStyle = prize_colors[0] ? prize_colors[0] : "#ffb820";
       } else {
-        ctx.fillStyle = "#ffcb3f";
+        ctx.fillStyle = prize_colors[1] ? prize_colors[1] : "#ffcb3f";
       }
       ctx.fill();
       ctx.lineWidth = 1;

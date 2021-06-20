@@ -23,16 +23,32 @@ function insertScript(url) {
 function initHTML() {
     document.body.innerHTML = `<div id="cnvWheel"><!-- The Modal -->
     <div id="cnvWidget" class="modal">
-        <div class="modal-content">
+        <!-- background_url -->
+        <div class="modal-content" style="background-image: url(${background_url})">
             <span class="cnv-md-close">&times;</span>
             <div class="wrapper typo" id="wrapper">
             <div class="name">Vòng quay đêm 18</div>
             <section id="luckywheel" class="hc-luckywheel">
                 <img class="hc-luckywheel-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" />
-                <div class="hc-luckywheel-container">
-                <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
+                
+                <!-- arrow_url -->
+                <div class="hc-luckywheel-arrow">
+                    <img src="${arrow_url}" />
                 </div>
-                <a class="hc-luckywheel-btn" href="javascript:;">Xoay</a>
+                <!-- arrow_url -->
+
+                <!-- border_url -->
+                <img class="hc-luckywheel-border" src="${border_url}" />
+                <!-- End of border_url -->
+
+                <div class="hc-luckywheel-container">
+                    <canvas class="hc-luckywheel-canvas" width="500px" height="500px">Vòng Xoay May Mắn</canvas>
+                </div>
+
+                <a class="hc-luckywheel-btn" href="javascript:;">
+                    <img src="${btn_background_url}" />
+                    <img src="${button_url}" />
+                </a>
             </section>
             <div class="your-information">
                 <div class="turn-count">
