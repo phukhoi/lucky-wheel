@@ -177,7 +177,7 @@
       document.querySelector('#input-email').value = params.email || '';
       document.querySelector('#input-phone').value = params.phone || '';
       
-      if (`${params.submit}` === '1' && params.name && params.email &&  params.phone) {
+      if (`${params.submit}` === '1' &&  params.phone) {
         document.querySelector('.form-btn--info').click();
       } else {
         addClass(document.querySelector('.popup--info'), 'show');
@@ -188,6 +188,7 @@
   function events() {
     var animateCall = 0;
     btn.addEventListener('click', event => {
+        console.log('allow to play:', allowToPlay);
       if (!allowToPlay) {
         const gameUserToken = localStorage.getItem('gameUserToken');
         const claim_data = {
@@ -200,7 +201,10 @@
               if (res) {
                 const resData = JSON.parse(res);
                 const { data } = resData;
-                
+                if (data.turn_count != undefined) {
+                    //update turn_count html
+                  document.querySelector('.your-information .times').innerHTML = data.turn_count;
+                } 
                 // get historiest
                 const histories = data?.histories || [];
                   document.getElementById('histories').innerHTML = histories.map(item => 
@@ -218,6 +222,8 @@
                         const { data } = resData;
 
                         // todo: get position of game: targetPrize [position of game in the list]
+                        targetPrize = 1; // need to change to this
+                      //   targetPrize = data?.position_id; // need to change to this
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
                         allowToPlay = true;
@@ -242,7 +248,7 @@
             })
           .catch(res => {
             if (res.status === 401) {
-              localStorage.removeItem('gameUserEmail');
+              localStorage.removeItem('gameUserPhone');
               localStorage.removeItem('gameUserToken');
               addClass(document.querySelector('.popup--info'), 'show');
             }
@@ -251,16 +257,17 @@
           addClass(document.querySelector('.popup--info'), 'show');
         }
       } else {
-        targetPrize = 3;
+          console.log('target price:', targetPrize);
+      //   targetPrize = 0;
         if (!targetPrize) return;
         // Spin to the target prize
         addClass(btn, "disabled");
-
+          console.log('target price:', targetPrize);
         data = [targetPrize, 1]; // control giải thưởng
         if (data[0] == null && !data[1] == null) {
           return;
         }
-        console.log(data);
+
         optsPrize = {
           prizeId: data[0],
           chances: data[1]
@@ -293,6 +300,34 @@
           if (targetPrizeId && animateCall === 2) {
             makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId })
             .then(res => {
+
+              //get game info 
+              makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
+              .then(res => {
+                if (res) {
+                  const resData = JSON.parse(res);
+                  const { data } = resData;
+                  console.log(data.turn_count);
+                  // get historiest
+                  const histories = data?.histories || [];
+                    document.getElementById('histories').innerHTML = histories.map(item => 
+                    `<div class="prize">
+                      <div class="prize-name">${item.game_prize_name}</div>
+                    </div>`
+                  ).join('');
+                  
+                  document.querySelector('.your-information .times').innerHTML = data.turn_count;
+                  if (data.turn_count == 0) {
+                    // alert('Bạn đã hết lượt quay');
+                    allowToPlay = false;
+                    targetPrize = null;
+                    targetPrizeId = null;
+                    addClass(btn, "disabled");
+                  }
+                }
+              });
+                    //end get game info
+                    
               targetPrize = null;
               targetPrizeId = null;
               allowToPlay = false;
@@ -354,7 +389,7 @@
       }
       
       if (countError === 0) {
-        fnRequest(`${endPoint}/api/client/authorization?email=`+data.email, 'POST', function(res) {
+        fnRequest(`${endPoint}/api/client/authorization?phone=`+data.phone, 'POST', function(res) {
           // TODO: Need to check status of API save user's information
           // Check how many time left that user can play game
           if (res.status === 200) {
@@ -364,7 +399,7 @@
             const timeToPlay = jsonResponse.time || 1;
 
             localStorage.setItem('gameUserToken', token);
-            localStorage.setItem('gameUserEmail', data.email);
+            localStorage.setItem('gameUserPhone', data.phone);
             localStorage.setItem('timeToPlay', timeToPlay);
             
             const claim_data = {
@@ -376,7 +411,7 @@
               if (res) {
                 const resData = JSON.parse(res);
                 const { data } = resData;
-                
+                console.log('data line 414:', data);
                 // get historiest
                 const histories = data?.histories || [];
                 document.getElementById('histories').innerHTML = histories.map(item => 
@@ -385,6 +420,8 @@
                 </div>`
               ).join('');
                 
+              //update turn_count html
+              document.querySelector('.your-information .times').innerHTML = data.turn_count;
                 if (data.turn_count) {
                   makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data)
                     .then(res => {
@@ -394,8 +431,12 @@
 
                         // todo: get position of game: targetPrize [position of game in the list]
                         // memo: game_prize_id, game_prize_name
-                        targetPrizeId = data?.game_prize_id;
+                        targetPrizeId = data?.id;
+                        
+                        targetPrize = 1; // need to change to this
+                      //   targetPrize = data?.position_id; // need to change to this
                         allowToPlay = true;
+
                         
                         removeClass(document.querySelector('.popup--info'), 'show');
                       }
@@ -459,9 +500,8 @@
               </div>`
             ).join('');
             
-            if (data.turn_count) {
-              document.querySelector('.your-information .times').innerHTML = data.turn_count;
-            } else {
+            document.querySelector('.your-information .times').innerHTML = data.turn_count;
+            if (data.turn_count == 0) {
               // alert('Bạn đã hết lượt quay');
               allowToPlay = false;
               targetPrize = null;
@@ -1463,7 +1503,8 @@
     text-shadow: -1px -1px 0px #3c4915, 1px -1px 0px #3c4915, -1px 1px 0px #3c4915, 1px 1px 0px #3c4915;
   }
   .modal-content {
-    padding: 15px 15px 45px 15px;
+    height: 100%;
+    padding: 0px 15px 0px 15px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1504,7 +1545,14 @@
   .prize .prize-name {
     font-size: 14px;
     line-height: 17px;
-  }`;
+  }
+  #cnvWheel{
+      height: 100vh;
+  }
+  #cnvWidget{
+      height: 100%;
+  }
+  `;
 
   styleInject(css_md);
 
