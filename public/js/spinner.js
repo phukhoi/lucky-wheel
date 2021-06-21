@@ -1279,6 +1279,8 @@
     z-index: 1;
     width: 100%;
     height: 100%;
+    -webkit-transition: transform 6s ease;
+    transition: transform 6s ease;
   }
 
   .hc-luckywheel-container canvas,
@@ -1319,11 +1321,11 @@
   
   .hc-luckywheel-item .prize-image {
     display: inline-block;
-    max-height: 63px;
+    max-height: 41px;
   }
   
   .hc-luckywheel-item .prize-name {
-    font-size: 10px;
+    font-size: 8px;
     line-height: 12px;
     font-weight: bold;
     text-align: center;
@@ -1376,12 +1378,12 @@
   }
   
   .hc-luckywheel-btn .hc-luckywheel-btn-text {
-    max-width: 40px;
+    max-width: 61px;
   }
 
   .hc-luckywheel-btn.disabled {
     pointer-events: none;
-    background: #b07a7b;
+    // background: #b07a7b;
     color: #ccc;
   }
 
