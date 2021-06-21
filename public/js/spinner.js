@@ -266,7 +266,8 @@
                       alert(res.message);
                     });
                 } else {
-                  alert('Bạn đã hết lượt quay');
+                  // alert('Bạn đã hết lượt quay');
+                  addClass(document.querySelector('.popup--over-turn'), 'show');
                   allowToPlay = false;
                   targetPrize = null;
                   targetPrizeId = null;
@@ -340,13 +341,44 @@
                   const histories = data?.histories || [];
                     document.getElementById('histories').innerHTML = histories.map(item => 
                     `<div class="prize">
-                      <div class="prize-name">${item.game_prize_name}</div>
+                      <svg width="40" height="38" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M36.6528 16.4395H3.34584C2.99784 16.4395 2.71484 16.7225 2.71484 17.0715V36.6685C2.71484 37.0165 2.99784 37.2985 3.34584 37.2985H36.6528C37.0018 37.2985 37.2848 37.0165 37.2848 36.6685V17.0715C37.2848 16.7225 37.0018 16.4395 36.6528 16.4395Z" fill="#F7434C"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M36.6528 16.4395H3.34584C2.99784 16.4395 2.71484 16.7225 2.71484 17.0715V19.5975H37.2848V17.0715C37.2848 16.7225 37.0018 16.4395 36.6528 16.4395Z" fill="#DB2E37"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M23.2266 16.4395H16.7736C16.4246 16.4395 16.1426 16.7225 16.1426 17.0715V36.6685C16.1426 37.0165 16.4246 37.2985 16.7736 37.2985H23.2266C23.5756 37.2985 23.8586 37.0165 23.8586 36.6685V17.0715C23.8586 16.7225 23.5756 16.4395 23.2266 16.4395Z" fill="#FFDB57"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M23.2266 16.4395H16.7736C16.4246 16.4395 16.1426 16.7225 16.1426 17.0715V19.5845H23.8586V17.0715C23.8586 16.7225 23.5756 16.4395 23.2266 16.4395Z" fill="#F5BA3D"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M35.4227 4.77262C34.8037 3.15862 33.8257 1.58262 32.8087 0.555622C32.4357 0.178622 31.9327 -0.0123781 31.3607 0.000621907C29.4647 0.0436219 26.3737 2.42462 22.1767 7.07362C22.0707 7.18962 22.0137 7.34062 22.0137 7.49762V10.8376C22.0137 11.1866 22.2957 11.4696 22.6457 11.4696H32.3597C34.5257 11.4696 35.4177 10.4166 35.7867 9.53262C36.2777 8.35562 36.1487 6.66462 35.4227 4.77262Z" fill="#FFDB57"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M35.7845 5.87466C35.7665 5.80966 35.7395 5.74866 35.7025 5.69166C34.7485 4.24966 32.6875 4.78966 31.1275 5.49666C26.5935 7.54866 24.7205 10.3757 24.6425 10.4957C24.5165 10.6897 24.5075 10.9367 24.6175 11.1407C24.7275 11.3447 24.9405 11.4707 25.1725 11.4707H32.3605C33.7385 11.4707 34.7605 11.0477 35.3965 10.2137C36.1535 9.22366 36.2885 7.72266 35.7845 5.87466Z" fill="#EF9325"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.823 7.07453C13.625 2.42553 10.535 0.0455325 8.639 0.000532459C8.065 -0.0114675 7.564 0.179532 7.191 0.556532C6.173 1.58253 5.196 3.15953 4.577 4.77353C3.851 6.66553 3.722 8.35553 4.213 9.53353C4.581 10.4165 5.474 11.4705 7.639 11.4705H17.354C17.703 11.4705 17.986 11.1875 17.986 10.8385V7.49753C17.986 7.34153 17.928 7.19053 17.823 7.07453Z" fill="#FFDB57"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.3568 10.4951C15.2798 10.3761 13.4068 7.5481 8.87277 5.4961C7.31177 4.7891 5.25177 4.2501 4.29777 5.6921C4.26077 5.7481 4.23277 5.8091 4.21477 5.8741C3.71177 7.7231 3.84577 9.2241 4.60277 10.2141C5.23977 11.0481 6.26177 11.4711 7.63877 11.4711H14.8278C15.0588 11.4711 15.2718 11.3441 15.3818 11.1411C15.4928 10.9371 15.4828 10.6891 15.3568 10.4951Z" fill="#EF9325"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M22.6447 6.24219H17.3537C17.0047 6.24219 16.7227 6.52519 16.7227 6.87319V10.8392C16.7227 11.1872 17.0047 11.4702 17.3537 11.4702H22.6447C22.9937 11.4702 23.2767 11.1872 23.2767 10.8392V6.87319C23.2767 6.52519 22.9937 6.24219 22.6447 6.24219Z" fill="#F5BA3D"/>
+                        <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="10" width="40" height="8">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.209H39.9998V17.704H0V10.209Z" fill="white"/>
+                        </mask>
+                        <g mask="url(#mask0)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M39.368 10.209H0.631C0.283 10.209 0 10.492 0 10.84V17.073C0 17.421 0.283 17.704 0.631 17.704H39.368C39.718 17.704 40 17.421 40 17.073V10.84C40 10.492 39.718 10.209 39.368 10.209Z" fill="#F7434C"/>
+                        </g>
+                        <mask id="mask1" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="38">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 37.3H40V0H0V37.3Z" fill="white"/>
+                        </mask>
+                        <g mask="url(#mask1)">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.1484 17.703H24.8514V10.207H15.1484V17.703Z" fill="#FFDB57"/>
+                        </g>
+                      </svg>
+                      <div class="prize-inner">
+                        <div class="prize-name">Bạn nhận được ${item.game_prize_name}</div>
+                        <div class="prize-desc">
+                          <span>Hạn dùng: 15/04/2020</span>
+                          <button class="btn-apply">Sử Dụng</button>
+                        </div>
+                      </div>
                     </div>`
                   ).join('');
                   
                   document.querySelector('.game-times').innerHTML = data.turn_count;
                   if (data.turn_count == 0) {
                     // alert('Bạn đã hết lượt quay');
+                    addClass(document.querySelector('.popup--over-turn'), 'show');
+                    
                     allowToPlay = false;
                     targetPrize = null;
                     targetPrizeId = null;
@@ -401,6 +433,10 @@
     document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--success.show'), 'show');
       removeClass(btn, 'disabled');
+    });
+    
+    document.querySelector('.popup--over-turn .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--over-turn.show'), 'show');
     });
     
     btnSubmit.addEventListener('click', event => {
@@ -474,7 +510,8 @@
                     });
                 } else {
                   removeClass(document.querySelector('.popup--info'), 'show');
-                  alert('Bạn đã hết lượt quay');
+                  // alert('Bạn đã hết lượt quay');
+                  addClass(document.querySelector('.popup--over-turn'), 'show');
                   allowToPlay = true;
                   targetPrize = null;
                   targetPrizeId = null;
@@ -508,6 +545,23 @@
       removeClass(document.querySelector('.popup--histories'), 'show');
     });
     
+    // Popup full screen
+    document.querySelector('.btn-guide').addEventListener('click', event => {
+      addClass(document.querySelector('.popup--guide'), 'show');
+    });
+    
+    document.querySelector('.popup--guide .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--guide'), 'show');
+    });
+    
+    document.querySelector('.btn-award').addEventListener('click', event => {
+      addClass(document.querySelector('.popup--award'), 'show');
+    });
+    
+    document.querySelector('.popup--award .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--award'), 'show');
+    });
+    
     // Get uder information if has token
     const gameUserToken = localStorage.getItem('gameUserToken');
     const claim_data = {
@@ -524,13 +578,14 @@
             const histories = data?.histories || [];
               document.getElementById('histories').innerHTML = histories.map(item => 
               `<div class="prize">
-                <div class="prize-name">${item.game_prize_name}</div>
+                <div class="prize-name">Bạn nhận được ${item.game_prize_name}</div>
               </div>`
             ).join('');
             
             document.querySelector('.game-times').innerHTML = data.turn_count;
             if (data.turn_count == 0) {
               // alert('Bạn đã hết lượt quay');
+              addClass(document.querySelector('.popup--over-turn'), 'show');
               allowToPlay = false;
               targetPrize = null;
               targetPrizeId = null;
@@ -1250,7 +1305,7 @@
 		transform-origin: left center;
     display: flex;
     align-items: center;
-    padding-left: 25px !important;
+    padding-left: 15px !important;
   }
   
   .hc-luckywheel-item-inner {
@@ -1318,6 +1373,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+  
+  .hc-luckywheel-btn .hc-luckywheel-btn-text {
+    max-width: 40px;
   }
 
   .hc-luckywheel-btn.disabled {
@@ -1526,12 +1585,55 @@
     color: rgb(255, 255, 255) !important;
     background: rgb(250, 197, 59) !important;
   }
+  .group-prize .group-prize-title {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    text-align: justify;
+    margin-bottom: 20px;
+  }
+  .prize {
+    padding: 14px 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    line-height: 20px;
+    color: #7F7F7F;
+  }
+  
+  .prize svg {
+    width: 40px;
+    height: autol
+  }
   .prize + .prize {
-    margin-top: 10px;
+    margin-top: 18px;
   }
   .prize .prize-name {
+    font-weight: 500;
     font-size: 14px;
     line-height: 17px;
+    text-align: justify;
+    color: #000000;
+    margin-bottom: 21px;
+  }
+  .prize .prize-inner {
+    width: calc(100% - 66px);
+  }
+  .prize .prize-desc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .prize .btn-apply {
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    color: #415097;
+    background: #FFFFFF;
+    border: 1px solid #415097;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 7px 21px;
   }
   #cnvWheel{
       height: 100vh;
@@ -1573,6 +1675,7 @@
     color: #000000;
     padding: 7px 10px;
     min-height: 41px;
+    cursor: pointer;
   }
   
   .game-footer {
@@ -1595,7 +1698,7 @@
   }
   
   .hc-luckywheel-arrow {
-    top: -13px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 50;
@@ -1666,6 +1769,50 @@
     text-transform: uppercase;
     color: #FFD714;
     margin-bottom: 38px;
+  }
+
+  .popup--full-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+  }
+  
+  .popup--full-screen .popup-heading {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #332003;
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+  }
+  
+  .popup--full-screen .popup-close {
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: auto;
+  }
+  
+  .popup--full-screen .popup-content {
+    font-size: 15px;
+    line-height: 24px;
+    text-align: justify;
+    color: #000000;
+    padding: 17px;
+  }
+  
+  .popup--full-screen .popup-content p,
+  .popup--full-screen .popup-content ul {
+    margin-top: 30px;
+  }
+  
+  .popup--full-screen .popup-content p:first-child,
+  .popup--full-screen .popup-content ul:first-child {
+    margin-top: 0;
   }
   `;
 
