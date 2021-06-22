@@ -255,7 +255,7 @@
                         }
 
                         // memo: game_prize_id, game_prize_name
-                        targetPrizeId = data?.game_prize_id;
+                        targetPrizeId = data?.id;
                         allowToPlay = true;
                         
                         // Memo: Trigger click to auto spin
@@ -469,7 +469,7 @@
                         }
 
                         // memo: game_prize_id, game_prize_name
-                        targetPrizeId = data?.game_prize_id;
+                        targetPrizeId = data?.id;
 
                         allowToPlay = true;
 
