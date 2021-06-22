@@ -247,7 +247,7 @@
 
                         // memo: get position of game: targetPrize [position of game in the list]
                         if (prizes) {
-                          const index = prizes.findIndex(item => item.id === data?.id);
+                          const index = prizes.findIndex(item => item.id === data?.game_prize_id);
                           
                           if (index !== -1) targetPrize = index;
                         } else {
@@ -255,7 +255,7 @@
                         }
 
                         // memo: game_prize_id, game_prize_name
-                        targetPrizeId = data?.id;
+                        targetPrizeId = data?.game_prize_id;
                         allowToPlay = true;
                         
                         // Memo: Trigger click to auto spin
@@ -461,7 +461,7 @@
 
                         // memo: get position of game: targetPrize [position of game in the list]
                         if (prizes) {
-                          const index = prizes.findIndex(item => item.id === data?.id);
+                          const index = prizes.findIndex(item => item.id === data?.game_prize_id);
                           
                           if (index !== -1) targetPrize = index;
                         } else {
@@ -469,15 +469,7 @@
                         }
 
                         // memo: game_prize_id, game_prize_name
-                        targetPrizeId = data?.id;
-                        
-                        if (prizes) {
-                          const index = prizes.findIndex(item => item.id === data?.id);
-                          
-                          if (index !== -1) targetPrize = index;
-                        } else {
-                          targetPrize = -1;
-                        }
+                        targetPrizeId = data?.game_prize_id;
 
                         allowToPlay = true;
 
