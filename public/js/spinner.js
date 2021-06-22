@@ -520,6 +520,11 @@
     document.querySelector('.popup--award .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--award'), 'show');
     });
+
+    document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--success.show'), 'show');
+      removeClass(btn, 'disabled');
+    });
     
     // Get uder information if has token
     const gameUserToken = localStorage.getItem('gameUserToken');
