@@ -246,7 +246,7 @@
                         const { data } = resData;
 
                         // memo: get position of game: targetPrize [position of game in the list]
-                        targetPrize = data?.position;
+                        targetPrize = data?.game_prize_position;
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
@@ -454,7 +454,7 @@
                         const { data } = resData;
 
                         // memo: get position of game: targetPrize [position of game in the list]
-                        targetPrize = data?.position;
+                        targetPrize = data?.game_prize_position;
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
@@ -528,6 +528,10 @@
       removeClass(btn, 'disabled');
     });
     
+    document.querySelector('.popup--success .popup-footer .popup-btn').addEventListener('click', event => {
+      removeClass(document.querySelector('.popup--success.show'), 'show');
+      removeClass(btn, 'disabled');
+    });
     // Get uder information if has token
     const gameUserToken = localStorage.getItem('gameUserToken');
     const claim_data = {
