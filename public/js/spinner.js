@@ -11,7 +11,7 @@
     fnGotBack,
     optsPrize,
     allowToPlay = false,
-     = null,
+    targetPrize = null,
     targetPrizeId = null,
     endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl;
 
