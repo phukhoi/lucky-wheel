@@ -246,13 +246,7 @@
                         const { data } = resData;
 
                         // memo: get position of game: targetPrize [position of game in the list]
-                        if (prizes) {
-                          const index = prizes.findIndex(item => item.id === data?.game_prize_id);
-                          
-                          if (index !== -1) targetPrize = index;
-                        } else {
-                          targetPrize = -1;
-                        }
+                        targetPrize = data?.position;
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
@@ -460,13 +454,7 @@
                         const { data } = resData;
 
                         // memo: get position of game: targetPrize [position of game in the list]
-                        if (prizes) {
-                          const index = prizes.findIndex(item => item.id === data?.game_prize_id);
-                          
-                          if (index !== -1) targetPrize = index;
-                        } else {
-                          targetPrize = -1;
-                        }
+                        targetPrize = data?.position;
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
