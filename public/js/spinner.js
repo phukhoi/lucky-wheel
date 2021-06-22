@@ -361,7 +361,8 @@
               targetPrizeId = null;
               allowToPlay = false;
               animateCall  = 0;
-
+              
+              document.querySelector('.popup--success .gift').innerHTML = data?.game_prize_name;
               addClass(document.querySelector('.popup--success'), 'show');
             })
             .catch(res => {
@@ -518,6 +519,7 @@
     
     document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--success'), 'show');
+      document.querySelector('.popup--success .gift').innerHTML = '';
     });
     
     document.querySelector('.popup--histories .popup-close').addEventListener('click', event => {

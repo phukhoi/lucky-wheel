@@ -113,7 +113,7 @@ window.cnvwidget = {
                       </svg>
                   </button>
                   <p class="sub-title">PHẦN QUÀ CỦA BẠN LÀ:</p>
-                  <p class="gift">Voucher 15%</p>
+                  <p class="gift"></p>
                   <p class="desc">Phần quà sẽ được thêm vào ƯU ĐÃI CỦA BẠN</p>
                   <div class="popup-footer">
                       <button class="popup-btn">QUAY TIẾP</button>
