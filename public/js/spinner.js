@@ -245,9 +245,15 @@
                         const resData = JSON.parse(res);
                         const { data } = resData;
 
-                        // todo: get position of game: targetPrize [position of game in the list]
-                        targetPrize = 1; // need to change to this
-                      //   targetPrize = data?.position_id; // need to change to this
+                        // memo: get position of game: targetPrize [position of game in the list]
+                        if (prizes) {
+                          const index = prizes.findIndex(item => item.id === data?.id);
+                          
+                          if (index !== -1) targetPrize = index + 1;
+                        } else {
+                          targetPrize = -1;
+                        }
+
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
                         allowToPlay = true;
@@ -452,7 +458,15 @@
                         const resData = JSON.parse(res);
                         const { data } = resData;
 
-                        // todo: get position of game: targetPrize [position of game in the list]
+                        // memo: get position of game: targetPrize [position of game in the list]
+                        if (prizes) {
+                          const index = prizes.findIndex(item => item.id === data?.id);
+                          
+                          if (index !== -1) targetPrize = index + 1;
+                        } else {
+                          targetPrize = -1;
+                        }
+
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
                         
