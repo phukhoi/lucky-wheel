@@ -13,6 +13,7 @@
     allowToPlay = false,
     targetPrize = null,
     targetPrizeId = null,
+    targetPrizeName = null,
     endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl;
 
   var cssPrefix,
@@ -250,6 +251,7 @@
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
+                        targetPrizeName = data?.game_prize_name;
                         allowToPlay = true;
                         
                         // Memo: Trigger click to auto spin
@@ -262,10 +264,10 @@
                       alert(res.message);
                     });
                 } else {
-                  // alert('Bạn đã hết lượt quay');
                   addClass(document.querySelector('.popup--over-turn'), 'show');
                   allowToPlay = false;
                   targetPrize = null;
+                  targetPrizeName = null;
                   targetPrizeId = null;
                   addClass(btn, "disabled");
                 }
@@ -332,36 +334,37 @@
                 if (res) {
                   const resData = JSON.parse(res);
                   const { data } = resData;
-                  console.log(data.turn_count);
                   // get historiest
                   const histories = data?.histories || [];
-                    document.getElementById('histories').innerHTML = renderHistories(histories);
+                  document.getElementById('histories').innerHTML = renderHistories(histories);
                   
                   document.querySelector('.game-times').innerHTML = data.turn_count;
-                  if (data.turn_count == 0) {
-                    // alert('Bạn đã hết lượt quay');
-                    addClass(document.querySelector('.popup--over-turn'), 'show');
+
+                  // if (data.turn_count == 0) {
+                  //   addClass(document.querySelector('.popup--over-turn'), 'show');
                     
-                    allowToPlay = false;
-                    targetPrize = null;
-                    targetPrizeId = null;
-                    addClass(btn, "disabled");
-                  }
+                  //   allowToPlay = false;
+                  //   targetPrize = null;
+                  //   targetPrizeId = null;
+                  //   addClass(btn, "disabled");
+                  // }
+
+                  //end get game info
+                  document.querySelector('.popup--success .gift').innerHTML = targetPrizeName;
+                  addClass(document.querySelector('.popup--success'), 'show');
+                        
+                  targetPrize = null;
+                  targetPrizeId = null;
+                  targetPrizeName = null;
+                  allowToPlay = false;
+                  animateCall  = 0;
                 }
               });
-                    //end get game info
-                    
-              targetPrize = null;
-              targetPrizeId = null;
-              allowToPlay = false;
-              animateCall  = 0;
-              
-              document.querySelector('.popup--success .gift').innerHTML = data?.game_prize_name;
-              addClass(document.querySelector('.popup--success'), 'show');
             })
             .catch(res => {
               alert(res.message);
               targetPrize = null;
+              targetPrizeName = null;
               targetPrizeId = null;
               allowToPlay = false;
               animateCall = 0;
@@ -458,7 +461,7 @@
 
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
-
+                        targetPrizeName = data?.game_prize_name;
                         allowToPlay = true;
 
                         
@@ -470,10 +473,10 @@
                     });
                 } else {
                   removeClass(document.querySelector('.popup--info'), 'show');
-                  // alert('Bạn đã hết lượt quay');
                   addClass(document.querySelector('.popup--over-turn'), 'show');
                   allowToPlay = true;
                   targetPrize = null;
+                  targetPrizeName = null;
                   targetPrizeId = null;
                   addClass(btn, "disabled");
                 }
@@ -554,10 +557,10 @@
             
             document.querySelector('.game-times').innerHTML = data.turn_count;
             if (data.turn_count == 0) {
-              // alert('Bạn đã hết lượt quay');
               addClass(document.querySelector('.popup--over-turn'), 'show');
               allowToPlay = false;
               targetPrize = null;
+              targetPrizeName = null;
               targetPrizeId = null;
               addClass(btn, "disabled");
             }
