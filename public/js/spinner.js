@@ -286,7 +286,7 @@
       } else {
           console.log('target price:', targetPrize);
       //   targetPrize = 0;
-        if (!targetPrize) return;
+        if (targetPrize === null) return;
         // Spin to the target prize
         addClass(btn, "disabled");
           console.log('target price:', targetPrize);
@@ -507,23 +507,28 @@
     
     document.querySelector('.popup--histories .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--histories'), 'show');
+      removeURLParam('show_header');
     });
     
     // Popup full screen
     document.querySelector('.btn-guide').addEventListener('click', event => {
       addClass(document.querySelector('.popup--guide'), 'show');
+      addURLParam('show_header', 'false');
     });
     
     document.querySelector('.popup--guide .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--guide'), 'show');
+      removeURLParam('show_header');
     });
     
     document.querySelector('.btn-award').addEventListener('click', event => {
       addClass(document.querySelector('.popup--award'), 'show');
+      addURLParam('show_header', 'false');
     });
     
     document.querySelector('.popup--award .popup-close').addEventListener('click', event => {
       removeClass(document.querySelector('.popup--award'), 'show');
+      removeURLParam('show_header');
     });
 
     document.querySelector('.popup--success .popup-close').addEventListener('click', event => {
@@ -571,7 +576,20 @@
     // Histories
     document.querySelector('.btn-show-histories').addEventListener('click', event => {
       addClass(document.querySelector('.popup--histories'), 'show');
+      addURLParam('show_header', 'false');
     });
+  }
+  
+  function addURLParam(key, value) {
+    var queryParams = new URLSearchParams(window.location.search);    
+    queryParams.set(key, value);
+    history.replaceState(null, null, "?" + queryParams.toString());
+  }
+  
+  function removeURLParam(key) {
+    var queryParams = new URLSearchParams(window.location.search);    
+    queryParams.delete(key);
+    history.replaceState(null, null, "?" + queryParams.toString());
   }
   
   function renderHistories (data) {
