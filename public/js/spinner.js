@@ -11,7 +11,7 @@
     fnGotBack,
     optsPrize,
     allowToPlay = false,
-    targetPrize = null,
+     = null,
     targetPrizeId = null,
     endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl;
 
@@ -249,7 +249,7 @@
                         if (prizes) {
                           const index = prizes.findIndex(item => item.id === data?.id);
                           
-                          if (index !== -1) targetPrize = index + 1;
+                          if (index !== -1) targetPrize = index;
                         } else {
                           targetPrize = -1;
                         }
@@ -462,7 +462,7 @@
                         if (prizes) {
                           const index = prizes.findIndex(item => item.id === data?.id);
                           
-                          if (index !== -1) targetPrize = index + 1;
+                          if (index !== -1) targetPrize = index;
                         } else {
                           targetPrize = -1;
                         }
@@ -470,8 +470,14 @@
                         // memo: game_prize_id, game_prize_name
                         targetPrizeId = data?.id;
                         
-                        targetPrize = 1; // need to change to this
-                      //   targetPrize = data?.position_id; // need to change to this
+                        if (prizes) {
+                          const index = prizes.findIndex(item => item.id === data?.id);
+                          
+                          if (index !== -1) targetPrize = index;
+                        } else {
+                          targetPrize = -1;
+                        }
+
                         allowToPlay = true;
 
                         
