@@ -1347,7 +1347,7 @@
     right: 0;
 		top: 50%;
     transform: translateY(-50%);
-    padding-right: 25px;
+    padding-right: 20px;
   }
   
   .hc-luckywheel-item .prize-image {
@@ -1357,13 +1357,13 @@
   
   .hc-luckywheel-item .prize-name {
     font-size: 8px;
-    line-height: 12px;
+    line-height: 10px;
     font-weight: bold;
     text-align: center;
     color: #000000;
     text-transform: uppercase;
     display: inline-block;
-    max-width: 96px;
+    max-width: 87px;
     position: relative;
     transform: rotate(24deg);
   }
