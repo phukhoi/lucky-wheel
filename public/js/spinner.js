@@ -1464,7 +1464,7 @@
 
   .popup .popup-content {
     background-color: #ffffff;
-    max-width: 470px;
+    // max-width: 470px;
     padding: 40px;
     position: relative;
   }
@@ -1815,6 +1815,7 @@
     width: 100%;
     height: 100%;
     background-color: #ffffff;
+    overflow: auto;
   }
   
   .popup--full-screen .popup-heading {
