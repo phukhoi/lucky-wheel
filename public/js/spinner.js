@@ -622,7 +622,7 @@
           <div class="prize-name">Bạn nhận được ${item.game_prize_name}</div>
           <div class="prize-desc">
             <span>Hạn dùng: 15/04/2020</span>
-            <button class="btn-apply">Sử Dụng</button>
+            <!--<button class="btn-apply">Sử Dụng</button>-->
           </div>
         </div>
       </div>`
