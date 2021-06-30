@@ -225,7 +225,6 @@
         }
         
         if (gameUserToken) {
-          console.log('has token')
           makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
             .then(res => {
               if (res) {
@@ -262,8 +261,7 @@
                     })
                     .catch(res => {
                       allowToPlay = false;
-                      console.log('here')
-                      // alert(res.message);
+                      alert(res.message);
                     });
                 } else {
                   addClass(document.querySelector('.popup--over-turn'), 'show');
@@ -451,11 +449,9 @@
                 
               //update turn_count html
               document.querySelector('.game-times').innerHTML = data.turn_count;
-                if (typeof data.turn_count !== 'undefined' && data.turn_count) {
-                  console.log('data.turn_count:', data.turn_count)
+                if (data.turn_count) {
                   makeRequest('POST', `${endPoint}/api/client/rewards/claim`, claim_data)
                     .then(res => {
-                      console.log('res', res)
                       if (res) {
                         const resData = JSON.parse(res);
                         const { data } = resData;
@@ -550,7 +546,6 @@
       game_code: window.cnvwidget?.gameId || ''
     }
     if (gameUserToken) {
-      console.log('have gameUserToken')
       makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
         .then(res => {
           if (res) {
@@ -567,7 +562,6 @@
             
             document.querySelector('.game-times').innerHTML = data.turn_count;
             if (data.turn_count == 0) {
-              console.log(data.turn_count)
               addClass(document.querySelector('.popup--over-turn'), 'show');
               allowToPlay = false;
               targetPrize = null;
@@ -659,8 +653,7 @@
       xhr.setRequestHeader('Accept', 'application/json');
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('gameUserToken'));
-      xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-      if(method == "POST" && data) {l
+      if(method == "POST" && data) {
         xhr.send(JSON.stringify(data));
       }else{
         xhr.send();
@@ -677,7 +670,6 @@
       }
     };
     xhttp.open(method, url, true);
-    xhttp.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
     // xhttp.responseType = 'json';
     xhttp.send();
   }
