@@ -14,7 +14,8 @@
     targetPrize = null,
     targetPrizeId = null,
     targetPrizeName = null,
-    endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl;
+    endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl,
+    animateCall = 0;
 
   var cssPrefix,
     eventPrefix,
@@ -215,9 +216,11 @@
   }
   
   function events() {
-    var animateCall = 0;
     btn.addEventListener('click', event => {
-        console.log('allow to play:', allowToPlay);
+      // Reset before run animate
+      animateCall = 0;
+
+      console.log('allow to play:', allowToPlay);
       if (!allowToPlay) {
         const gameUserToken = localStorage.getItem('gameUserToken');
         const claim_data = {
@@ -359,7 +362,7 @@
                   targetPrizeId = null;
                   targetPrizeName = null;
                   allowToPlay = false;
-                  animateCall  = 0;
+                  animateCall = 0;
                 }
               });
             })
