@@ -660,7 +660,7 @@
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Authorization', 'Bearer '+localStorage.getItem('gameUserToken'));
       xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-      if(method == "POST" && data) {l
+      if(method == "POST" && data) {
         xhr.send(JSON.stringify(data));
       }else{
         xhr.send();
