@@ -17,7 +17,8 @@
       endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl,
       animateCall = 0,
       appBarBgColor = "#332003",
-      appBarTextColor ="#fff";
+      appBarTextColor ="#fff",
+      timeOutAnimate = null;
   
     var cssPrefix,
       eventPrefix,
@@ -320,80 +321,91 @@
           deg = deg || 0;
           var _turn = 2;
           var kichban = Math.floor((Math.random() * 2) + 1);
-          if( kichban == 1 ){
+          if( kichban == 1 ) {
             deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) - (360/num) + (360/num/2) +20 ) ;
+            container.removeClass('animate-script-2');
+            container.addClass('animate-script-1');
             runRotate(deg );
-            setTimeout(() => {  
-                container.style.transitionDuration = '0.8s';
-                runRotate(deg + 360/num - (360/num/2) - 20);
-                container.style.transitionDuration = '6s';
-            }, 6000);
+            // if (timeOutAnimate) {
+            //   clearTimeout(timeOutAnimate);
+            // }
+            // timeOutAnimate = setTimeout(() => {  
+            //     container.style.transitionDuration = '0.8s';
+            //     runRotate(deg + 360/num - (360/num/2) - 20);
+            //     container.style.transitionDuration = '6s';
+            // }, 6000);
           }
           if( kichban == 2 ){
             deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) + (360/num/2-10)  ) ;
+            container.addClass('animate-script-2');
+            container.removeClass('animate-script-1');
             runRotate(deg );
-            setTimeout(() => {  
-                container.style.transitionDuration = '2s';
-                runRotate(deg - 360/num + (360/num/2 + 10) );
-                container.style.transitionDuration = '6s';
-            }, 6000);
+            // if (timeOutAnimate) {
+            //   clearTimeout(timeOutAnimate);
+            // }
+            // timeOutAnimate = setTimeout(() => {  
+            //     container.style.transitionDuration = '2s';
+            //     runRotate(deg - 360/num + (360/num/2 + 10) );
+            //     container.style.transitionDuration = '6s';
+            // }, 6000);
           }
-          bind(container, transitionEnd, function () {
-            // memo: check and apply this prize for user
-            animateCall += 1;
-            
-            if (targetPrizeId && animateCall === 2) {
-              makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId })
-              .then(res => {
-  
-                //get game info 
-                makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
-                .then(res => {
-                  if (res) {
-                    const resData = JSON.parse(res);
-                    const { data } = resData;
-                    // get historiest
-                    const histories = data?.histories || [];
-                    document.getElementById('histories').innerHTML = renderHistories(histories);
-                    
-                    document.getElementsByClassName('game-times')[0].innerHTML = data.turn_count;
-  
-                    // if (data.turn_count == 0) {
-                    //   addClass(document.querySelector('.popup--over-turn'), 'show');
-                      
-                    //   allowToPlay = false;
-                    //   targetPrize = null;
-                    //   targetPrizeId = null;
-                    //   addClass(btn, "disabled");
-                    // }
-  
-                    //end get game info
-                    document.getElementsByClassName('popup-gift')[0].innerHTML = targetPrizeName;
-                    addClass(document.getElementsByClassName('popup--success')[0], 'show');
-                          
-                    targetPrize = null;
-                    targetPrizeId = null;
-                    targetPrizeName = null;
-                    allowToPlay = false;
-                    animateCall = 0;
-                  }
-                });
-              })
-              .catch(res => {
-                alert(res.message);
-                targetPrize = null;
-                targetPrizeName = null;
-                targetPrizeId = null;
-                allowToPlay = false;
-                animateCall = 0;
-  
-                removeClass(btn, 'disabled');
-              });
-            }
-          });
         }
       });
       
+      bind(container, transitionEnd, function () {
+        // memo: check and apply this prize for user
+        animateCall += 1;
+        
+        if (targetPrizeId && animateCall === 1) {
+          makeRequest('POST', `${endPoint}/api/client/rewards/award`, { reward_id: targetPrizeId })
+          .then(res => {
+
+            //get game info 
+            makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
+            .then(res => {
+              if (res) {
+                const resData = JSON.parse(res);
+                const { data } = resData;
+                // get historiest
+                const histories = data?.histories || [];
+                document.getElementById('histories').innerHTML = renderHistories(histories);
+                
+                document.getElementsByClassName('game-times')[0].innerHTML = data.turn_count;
+
+                // if (data.turn_count == 0) {
+                //   addClass(document.querySelector('.popup--over-turn'), 'show');
+                  
+                //   allowToPlay = false;
+                //   targetPrize = null;
+                //   targetPrizeId = null;
+                //   addClass(btn, "disabled");
+                // }
+
+                //end get game info
+                document.getElementsByClassName('popup-gift')[0].innerHTML = targetPrizeName;
+                addClass(document.getElementsByClassName('popup--success')[0], 'show');
+                      
+                targetPrize = null;
+                targetPrizeId = null;
+                targetPrizeName = null;
+                allowToPlay = false;
+                animateCall = 0;
+              }
+            });
+          })
+          .catch(res => {
+            alert(res.message);
+            targetPrize = null;
+            targetPrizeName = null;
+            targetPrizeId = null;
+            allowToPlay = false;
+            animateCall = 0;
+
+            removeClass(btn, 'disabled');
+          });
+        }
+      });
+
       var btnSubmit = document.getElementsByClassName('form-btn--info')[0];
       var formInfo = document.getElementsByClassName('info-form')[0];
       function insertAfter(referenceNode, newNode) {
@@ -1345,8 +1357,16 @@
       z-index: 1;
       width: 100%;
       height: 100%;
-      -webkit-transition: transform 6s ease;
-      transition: transform 6s ease;
+    }
+    
+    .hc-luckywheel-container.animate-script-1 {
+      -webkit-transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
+      transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
+    }
+
+    .hc-luckywheel-container.animate-script-2 {
+      -webkit-transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
+      transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
     }
   
     .hc-luckywheel-container canvas,
