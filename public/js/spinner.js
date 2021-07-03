@@ -322,9 +322,11 @@
           var _turn = 2;
           var kichban = Math.floor((Math.random() * 2) + 1);
           if( kichban == 1 ) {
+            // easin back
             deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) - (360/num) + (360/num/2) +20 ) ;
-            container.removeClass('animate-script-2');
-            container.addClass('animate-script-1');
+            removeClass(container, 'animate-script-2');
+            addClass(container, 'animate-script-1');
+
             runRotate(deg );
             // if (timeOutAnimate) {
             //   clearTimeout(timeOutAnimate);
@@ -337,8 +339,9 @@
           }
           if( kichban == 2 ){
             deg = deg + (360 - (deg % 360)) + (360 * _turn - data[0] * (360 / num) + (360/num/2-10)  ) ;
-            container.addClass('animate-script-2');
-            container.removeClass('animate-script-1');
+            addClass(container, 'animate-script-2'); 
+            removeClass(container, 'animate-script-1');
+
             runRotate(deg );
             // if (timeOutAnimate) {
             //   clearTimeout(timeOutAnimate);
@@ -1358,15 +1361,15 @@
       width: 100%;
       height: 100%;
     }
-    
+
     .hc-luckywheel-container.animate-script-1 {
-      -webkit-transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
-      transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
+      -webkit-transition: transform 8s cubic-bezier(0.17, 0.67, 0.35, 1.13);
+      transition: transform 8s cubic-bezier(0.17, 0.67, 0.35, 1.13);
     }
 
     .hc-luckywheel-container.animate-script-2 {
-      -webkit-transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
-      transition: transform 8s cubic-bezier(.34,1.56,.88,.95);
+      -webkit-transition: transform 8s ease;
+      transition: transform 8s ease;
     }
   
     .hc-luckywheel-container canvas,
