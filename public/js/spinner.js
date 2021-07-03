@@ -1,4 +1,5 @@
 (function() {
+    
     var $,
       ele,
       container,
@@ -14,12 +15,22 @@
       targetPrize = null,
       targetPrizeId = null,
       targetPrizeName = null,
-      endPoint = window.cnvwidget?.isDebugMode ? window.cnvwidget?.stagingUrl : window.cnvwidget?.productionUrl,
+      endPoint = '',
       animateCall = 0,
       appBarBgColor = "#332003",
       appBarTextColor ="#fff",
       timeOutAnimate = null;
-  
+          
+      if (window.cnvwidget) {
+        if (window.cnvwidget.isDebugMode) {
+          endPoint = window.cnvwidget.stagingUrl;
+        } else {
+          endPoint = window.cnvwidget.productionUrl;
+        }
+      }
+      
+      console.log('endPoint', endPoint);
+      
     var cssPrefix,
       eventPrefix,
       vendors = {
@@ -237,9 +248,13 @@
         console.log('allow to play:', allowToPlay);
         if (!allowToPlay) {
           const gameUserToken = localStorage.getItem('gameUserToken');
-          const claim_data = {
-            game_code: window.cnvwidget?.gameId || ''
+          let game_code = '';
+          
+          if (window.cnvwidget) {
+            game_code = window.cnvwidget.gameId;
           }
+          
+          const claim_data = { game_code };
           
           if (gameUserToken) {
             console.log('has token')
@@ -253,7 +268,8 @@
                     document.getElementsByClassName('game-times')[0].innerHTML = data.turn_count;
                   } 
                   // get historiest
-                  const histories = data?.histories || [];
+                  let histories = [];
+                if (data.histories) histories = data.histories;
                     document.getElementById('histories').innerHTML = renderHistories(histories);
                   
                   if (data.turn_count) {
@@ -265,15 +281,15 @@
                           const { data } = resData;
   
                           // memo: get position of game: targetPrize [position of game in the list]
-                          targetPrize = data?.game_prize_position;
+                          targetPrize = data.game_prize_position;
   
                           // memo: game_prize_id, game_prize_name
-                          targetPrizeId = data?.id;
-                          targetPrizeName = data?.game_prize_name;
+                          targetPrizeId = data.id;
+                          targetPrizeName = data.game_prize_name;
                           allowToPlay = true;
                           
                           // Memo: Trigger click to auto spin
-                          document.getElementsByClassName('popup-gift')[0].innerHTML = data?.game_prize_name;
+                          document.getElementsByClassName('popup-gift')[0].innerHTML = data.game_prize_name;
                           document.getElementsByClassName("hc-luckywheel-btn")[0].click();
                         }
                       })
@@ -370,7 +386,8 @@
                 const resData = JSON.parse(res);
                 const { data } = resData;
                 // get historiest
-                const histories = data?.histories || [];
+                let histories = [];
+                if (data.histories) histories = data.histories;
                 document.getElementById('histories').innerHTML = renderHistories(histories);
                 
                 document.getElementsByClassName('game-times')[0].innerHTML = data.turn_count;
@@ -466,9 +483,13 @@
               localStorage.setItem('gameUserPhone', data.phone);
               localStorage.setItem('timeToPlay', timeToPlay);
               
-              const claim_data = {
-                game_code: window.cnvwidget?.gameId || ''
+              let game_code = '';
+          
+              if (window.cnvwidget) {
+                game_code = window.cnvwidget.gameId;
               }
+              
+              const claim_data = { game_code };
   
               //get user history
               makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code).then(res => {
@@ -477,7 +498,8 @@
                   const { data } = resData;
                   console.log('data line 414:', data);
                   // get historiest
-                  const histories = data?.histories || [];
+                  let histories = [];
+                  if (data.histories) histories = data.histories;
                   document.getElementById('histories').innerHTML = renderHistories(histories);
                   
                 //update turn_count html
@@ -492,11 +514,11 @@
                           const { data } = resData;
   
                           // memo: get position of game: targetPrize [position of game in the list]
-                          targetPrize = data?.game_prize_position;
+                          targetPrize = data.game_prize_position;
   
                           // memo: game_prize_id, game_prize_name
-                          targetPrizeId = data?.id;
-                          targetPrizeName = data?.game_prize_name;
+                          targetPrizeId = data.id;
+                          targetPrizeName = data.game_prize_name;
                           allowToPlay = true;
   
                           
@@ -581,9 +603,13 @@
       });
       // Get uder information if has token
       const gameUserToken = localStorage.getItem('gameUserToken');
-      const claim_data = {
-        game_code: window.cnvwidget?.gameId || ''
+      let game_code = '';
+          
+      if (window.cnvwidget) {
+        game_code = window.cnvwidget.gameId;
       }
+      
+      const claim_data = { game_code };
       if (gameUserToken) {
         console.log('have gameUserToken')
         makeRequest('GET', `${endPoint}/api/client/game-info`+'?'+'game_code='+claim_data.game_code)
@@ -593,7 +619,8 @@
               const { data } = resData;
               
               // get historiest
-              const histories = data?.histories || [];
+              let histories = [];
+              if (data.histories) histories = data.histories;
                 document.getElementById('histories').innerHTML = histories.map(item => 
                 `<div class="prize">
                   <div class="prize-name">Bạn nhận được ${item.game_prize_name}</div>
@@ -875,6 +902,8 @@
         return hcLuckywheel;
       });
     }
+    
+    console.log('spinner window.hcLuckywheel', window.hcLuckywheel);
   
   
     //
