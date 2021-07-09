@@ -267,115 +267,126 @@ var prizes = [
       </div>`;
   }
   initHTML();
-  //insertScript("./spinner.js?");
-    insertScript(window.cnvwidget.stagingUrl + '/js/spinner.js?');
-  var isPercentage = true;
-  
-  var w_ready = false;
-  var w_is_ready = setInterval(function () {
-    if (w_ready) {
-      clearInterval(w_is_ready);
-    }
-    if (document.readyState !== "loading") {
-      initWheel();
-    } else {
-      document.addEventListener("DOMContentLoaded", function () {
+  // insertScript("./spinner.js?");
+  // insertScript(window.cnvwidget.stagingUrl + '/js/spinner.js?');
+  const jsScript = document.createElement('script')
+  jsScript.src = window.cnvwidget.stagingUrl + '/js/spinner.js?';
+
+  document.body.appendChild(jsScript)
+
+  jsScript.addEventListener('load', () => {
+    console.log('loaded');
+    
+    console.log('loaded -> window.hcLuckywheel', window.hcLuckywheel);
+    var isPercentage = true;
+    
+    var w_ready = false;
+    var w_is_ready = setInterval(function () {
+      if (w_ready) {
+        clearInterval(w_is_ready);
+      }
+      if (document.readyState !== "loading") {
         initWheel();
-      });
-    }
-    function initWheel() {
-      // console.log(document.getElementById('cnvWheel'));
-      console.log('window.hcLuckywheel', window.hcLuckywheel);
-      var hcLuckywheel = window.hcLuckywheel;
-      
-      if (hcLuckywheel) {
-        hcLuckywheel.init({
-          id: "luckywheel",
-          config: function (callback) {
-            callback && callback(prizes);
-          },
-          mode: "both",
-          getPrize: function (callback) {
-            var rand = randomIndex(prizes);
-            var chances = rand;
-            callback && callback([rand, chances]);
-          },
-          gotBack: function (data) {
-            if (data == null) {
-              console.log("Chương trình kết thúc");
-            } else if (data == "Chúc bạn may mắn lần sau") {
-              console.log("Bạn không trúng thưởng");
-            } else {
-              console.log("Bạn đã trúng giải");
-            }
-          },
+      } else {
+        document.addEventListener("DOMContentLoaded", function () {
+          initWheel();
         });
       }
-    }
-    function randomIndex(prizes) {
-      if (isPercentage) {
-        var counter = 1;
-        for (let i = 0; i < prizes.length; i++) {
-          if (prizes[i].number == 0) {
-            counter++;
-          }
-        }
-        if (counter == prizes.length) {
-          return null;
-        }
-        let rand = Math.random();
-        let prizeIndex = null;
-        switch (true) {
-          case rand < prizes[4].percentpage:
-            prizeIndex = 4;
-            break;
-          case rand < prizes[4].percentpage + prizes[3].percentpage:
-            prizeIndex = 3;
-            break;
-          case rand <
-            prizes[4].percentpage + prizes[3].percentpage + prizes[2].percentpage:
-            prizeIndex = 2;
-            break;
-          case rand <
-            prizes[4].percentpage +
-              prizes[3].percentpage +
-              prizes[2].percentpage +
-              prizes[1].percentpage:
-            prizeIndex = 1;
-            break;
-          case rand <
-            prizes[4].percentpage +
-              prizes[3].percentpage +
-              prizes[2].percentpage +
-              prizes[1].percentpage +
-              prizes[0].percentpage:
-            prizeIndex = 0;
-            break;
-        }
-        if (prizes[prizeIndex].number != 0) {
-          prizes[prizeIndex].number = prizes[prizeIndex].number - 1;
-          return prizeIndex;
-        } else {
-          return randomIndex(prizes);
-        }
-      } else {
-        var counter = 0;
-        for (let i = 0; i < prizes.length; i++) {
-          if (prizes[i].number == 0) {
-            counter++;
-          }
-        }
-        if (counter == prizes.length) {
-          return null;
-        }
-        var rand = (Math.random() * prizes.length) >>> 0;
-        if (prizes[rand].number != 0) {
-          prizes[rand].number = prizes[rand].number - 1;
-          return rand;
-        } else {
-          return randomIndex(prizes);
+      function initWheel() {
+        // console.log(document.getElementById('cnvWheel'));
+        console.log('window.hcLuckywheel', window.hcLuckywheel);
+        var hcLuckywheel = window.hcLuckywheel;
+        
+        if (hcLuckywheel) {
+          hcLuckywheel.init({
+            id: "luckywheel",
+            config: function (callback) {
+              callback && callback(prizes);
+            },
+            mode: "both",
+            getPrize: function (callback) {
+              var rand = randomIndex(prizes);
+              var chances = rand;
+              callback && callback([rand, chances]);
+            },
+            gotBack: function (data) {
+              if (data == null) {
+                console.log("Chương trình kết thúc");
+              } else if (data == "Chúc bạn may mắn lần sau") {
+                console.log("Bạn không trúng thưởng");
+              } else {
+                console.log("Bạn đã trúng giải");
+              }
+            },
+          });
         }
       }
-    }
-    clearInterval(w_is_ready);
-  }, 400);
+      function randomIndex(prizes) {
+        if (isPercentage) {
+          var counter = 1;
+          for (let i = 0; i < prizes.length; i++) {
+            if (prizes[i].number == 0) {
+              counter++;
+            }
+          }
+          if (counter == prizes.length) {
+            return null;
+          }
+          let rand = Math.random();
+          let prizeIndex = null;
+          switch (true) {
+            case rand < prizes[4].percentpage:
+              prizeIndex = 4;
+              break;
+            case rand < prizes[4].percentpage + prizes[3].percentpage:
+              prizeIndex = 3;
+              break;
+            case rand <
+              prizes[4].percentpage + prizes[3].percentpage + prizes[2].percentpage:
+              prizeIndex = 2;
+              break;
+            case rand <
+              prizes[4].percentpage +
+                prizes[3].percentpage +
+                prizes[2].percentpage +
+                prizes[1].percentpage:
+              prizeIndex = 1;
+              break;
+            case rand <
+              prizes[4].percentpage +
+                prizes[3].percentpage +
+                prizes[2].percentpage +
+                prizes[1].percentpage +
+                prizes[0].percentpage:
+              prizeIndex = 0;
+              break;
+          }
+          if (prizes[prizeIndex].number != 0) {
+            prizes[prizeIndex].number = prizes[prizeIndex].number - 1;
+            return prizeIndex;
+          } else {
+            return randomIndex(prizes);
+          }
+        } else {
+          var counter = 0;
+          for (let i = 0; i < prizes.length; i++) {
+            if (prizes[i].number == 0) {
+              counter++;
+            }
+          }
+          if (counter == prizes.length) {
+            return null;
+          }
+          var rand = (Math.random() * prizes.length) >>> 0;
+          if (prizes[rand].number != 0) {
+            prizes[rand].number = prizes[rand].number - 1;
+            return rand;
+          } else {
+            return randomIndex(prizes);
+          }
+        }
+      }
+      clearInterval(w_is_ready);
+    }, 400);
+  });
+
