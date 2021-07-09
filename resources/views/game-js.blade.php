@@ -45,7 +45,7 @@ var prizes = [
     document.head.appendChild(a);
   }
   function initHTML() {
-    document.body.innerHTML = `<div id="cnvWheel" class="game">
+    document.body.innerHTML = `<div id="cnvWheel" class="game" style="display: none;">
     <!-- The Modal -->
       <div id="cnvWidget" class="modal">
       <div class="modal-heading">
@@ -264,7 +264,7 @@ var prizes = [
           </div>
       </div>
       <!-- End of Modal Award -->
-      </div>`;
+      </div>  <div id="cnvWheelLoading" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;"><svg style="width: 100px; height: 100px;" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve"> <path fill="red" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"> <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/> </path></svg></div>`;
   }
   initHTML();
   // insertScript("./spinner.js?");
