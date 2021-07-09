@@ -2036,7 +2036,9 @@
     counter++;
     if ( counter === len ) {
       document.getElementById("cnvWheel").style.display = "block";
-      document.getElementById("cnvWheelLoading").style.display = "none";
+      const loading = document.getElementById("cnvWheelLoading");
+      loading.style.opacity = '0';
+      setTimeout(function(){loading.parentNode.removeChild(loading);}, 1000);
     }
   }
 
