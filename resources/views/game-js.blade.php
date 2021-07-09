@@ -275,9 +275,6 @@ var prizes = [
   document.body.appendChild(jsScript)
 
   jsScript.addEventListener('load', () => {
-    console.log('loaded');
-    
-    console.log('loaded -> window.hcLuckywheel', window.hcLuckywheel);
     var isPercentage = true;
     
     var w_ready = false;
@@ -293,8 +290,6 @@ var prizes = [
         });
       }
       function initWheel() {
-        // console.log(document.getElementById('cnvWheel'));
-        console.log('window.hcLuckywheel', window.hcLuckywheel);
         var hcLuckywheel = window.hcLuckywheel;
         
         if (hcLuckywheel) {

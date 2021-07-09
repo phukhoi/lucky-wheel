@@ -1778,6 +1778,7 @@
   }
   #cnvWidget{
       height: 100%;
+      display: none;
   }
   
   .game {
